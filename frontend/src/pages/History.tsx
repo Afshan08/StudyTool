@@ -186,7 +186,7 @@ export const History: React.FC = () => {
   return (
     <div className="flex-1 p-8 overflow-y-auto space-y-8">
       {/* Header */}
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0 stagger-item stagger-1">
         <div>
           <h1 className="text-3xl font-extrabold text-white bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
             Study History
@@ -197,7 +197,7 @@ export const History: React.FC = () => {
         {/* Soft Deleted Toggle */}
         <button
           onClick={() => setShowDeleted(!showDeleted)}
-          className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all ${
+          className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all active-press ${
             showDeleted 
               ? 'bg-amber-500/10 border-amber-500/30 text-amber-300'
               : 'bg-slate-900 border-white/5 text-slate-400 hover:text-slate-200'
@@ -209,14 +209,14 @@ export const History: React.FC = () => {
 
       {/* Undo Toast Alert */}
       {restoreSessionId && (
-        <div className="p-3 bg-indigo-500/10 border border-indigo-500/25 rounded-xl flex items-center justify-between text-indigo-300 text-xs font-semibold shadow-lg shadow-indigo-900/10 animate-fade-in">
+        <div className="p-3 bg-indigo-500/10 border border-indigo-500/25 rounded-xl flex items-center justify-between text-indigo-300 text-xs font-semibold shadow-lg shadow-indigo-900/10 animate-fade-in mb-4">
           <div className="flex items-center space-x-2">
             <AlertCircle className="w-4.5 h-4.5" />
             <span>Session soft-deleted.</span>
           </div>
           <button 
             onClick={() => handleRestore(restoreSessionId)}
-            className="flex items-center space-x-1.5 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg transition-colors font-bold"
+            className="flex items-center space-x-1.5 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg transition-colors font-bold active-press"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Undo Delete</span>
@@ -225,7 +225,7 @@ export const History: React.FC = () => {
       )}
 
       {/* Filters Card */}
-      <section className="glass-panel p-5 rounded-2xl grid grid-cols-1 md:grid-cols-4 gap-4">
+      <section className="glass-panel p-5 rounded-2xl grid grid-cols-1 md:grid-cols-4 gap-4 stagger-item stagger-2">
         {/* Search */}
         <div className="relative md:col-span-2">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
@@ -259,7 +259,7 @@ export const History: React.FC = () => {
         <div className="flex space-x-2">
           <button
             onClick={() => toggleSort('date')}
-            className={`flex-1 flex items-center justify-center space-x-1.5 px-3 py-2 bg-slate-900/60 border rounded-xl text-xs font-medium transition-colors ${
+            className={`flex-1 flex items-center justify-center space-x-1.5 px-3 py-2 bg-slate-900/60 border rounded-xl text-xs font-medium transition-colors active-press ${
               sortField === 'date' ? 'border-indigo-500/40 text-indigo-300 bg-indigo-500/5' : 'border-white/10 text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -269,7 +269,7 @@ export const History: React.FC = () => {
           </button>
           <button
             onClick={() => toggleSort('duration')}
-            className={`flex-1 flex items-center justify-center space-x-1.5 px-3 py-2 bg-slate-900/60 border rounded-xl text-xs font-medium transition-colors ${
+            className={`flex-1 flex items-center justify-center space-x-1.5 px-3 py-2 bg-slate-900/60 border rounded-xl text-xs font-medium transition-colors active-press ${
               sortField === 'duration' ? 'border-indigo-500/40 text-indigo-300 bg-indigo-500/5' : 'border-white/10 text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -285,18 +285,19 @@ export const History: React.FC = () => {
         {loading ? (
           <div className="text-center py-12 text-slate-500 text-sm">Loading session history...</div>
         ) : processedSessions.length === 0 ? (
-          <div className="glass-panel p-12 text-center rounded-2xl">
+          <div className="glass-panel p-12 text-center rounded-2xl stagger-item stagger-3">
             <AlertCircle className="w-8 h-8 text-slate-600 mx-auto mb-3" />
             <p className="text-sm font-semibold text-slate-400">No sessions match your filters</p>
             <p className="text-xs text-slate-500 mt-1">Try resetting search query or categories.</p>
           </div>
         ) : (
-          processedSessions.map((session) => {
+          processedSessions.map((session, index) => {
             const isExpanded = expandedSessionId === session.id;
             return (
               <div 
                 key={session.id} 
-                className="glass-panel rounded-2xl overflow-hidden transition-all duration-300 border border-white/5 hover:border-white/10"
+                className="glass-panel rounded-2xl overflow-hidden transition-all duration-350 border border-white/5 hover:border-white/10 stagger-item"
+                style={{ animationDelay: `${Math.min(5, index) * 50 + 100}ms` }}
               >
                 {/* Main Session row */}
                 <div className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -346,7 +347,7 @@ export const History: React.FC = () => {
                     <div className="flex items-center space-x-1">
                       <button
                         onClick={() => setExpandedSessionId(isExpanded ? null : session.id)}
-                        className={`p-2 rounded-lg text-slate-400 hover:text-slate-200 transition-colors ${isExpanded ? 'bg-slate-900' : 'bg-transparent'}`}
+                        className={`p-2 rounded-lg text-slate-400 hover:text-slate-200 transition-colors active-press ${isExpanded ? 'bg-slate-900' : 'bg-transparent'}`}
                         title="View Details & Edit History"
                       >
                         <Eye className="w-4 h-4" />
@@ -356,14 +357,14 @@ export const History: React.FC = () => {
                         <>
                           <button
                             onClick={() => openEditModal(session)}
-                            className="p-2 text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/10 rounded-lg transition-all"
+                            className="p-2 text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/10 rounded-lg transition-all active-press"
                             title="Edit Session"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(session.id)}
-                            className="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-all"
+                            className="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-all active-press"
                             title="Delete Session"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -372,7 +373,7 @@ export const History: React.FC = () => {
                       ) : (
                         <button
                           onClick={() => handleRestore(session.id)}
-                          className="p-2 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all"
+                          className="p-2 text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all active-press"
                           title="Restore Session"
                         >
                           <RotateCcw className="w-4 h-4" />
@@ -382,9 +383,13 @@ export const History: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Expanded Section: Detail Feedback & Edit History */}
-                {isExpanded && (
-                  <div className="border-t border-darkBorder bg-slate-900/30 p-5 space-y-4">
+                {/* Expanded Section: Detail Feedback & Edit History Accordion */}
+                <div 
+                  className={`transition-all duration-300 ease-[var(--ease-out-expo)] overflow-hidden border-t border-darkBorder bg-slate-900/30 ${
+                    isExpanded ? 'max-h-[800px] opacity-100 p-5' : 'max-h-0 opacity-0 p-0 pointer-events-none'
+                  }`}
+                >
+                  <div className="space-y-4">
                     {/* Grid details */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                       <div>
@@ -461,7 +466,7 @@ export const History: React.FC = () => {
                       )}
                     </div>
                   </div>
-                )}
+                </div>
               </div>
             );
           })
@@ -469,116 +474,122 @@ export const History: React.FC = () => {
       </section>
 
       {/* Edit Session Dialog Modal */}
-      {editingSession && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="w-full max-w-md glass-panel p-6 rounded-2xl space-y-4">
+      <div 
+        className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md modal-overlay ${
+          editingSession ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <div 
+          className={`w-full max-w-md glass-panel p-6 rounded-2xl space-y-4 modal-content ${
+            editingSession ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4'
+          }`}
+        >
+          <div>
+            <h3 className="text-lg font-bold text-white">Edit Session</h3>
+            <p className="text-xs text-slate-400 mt-1">Changes are logged in the session edit history trail.</p>
+          </div>
+
+          <form onSubmit={handleEditSubmit} className="space-y-4">
             <div>
-              <h3 className="text-lg font-bold text-white">Edit Session</h3>
-              <p className="text-xs text-slate-400 mt-1">Changes are logged in the session edit history trail.</p>
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                Category
+              </label>
+              <select
+                value={editCategory}
+                onChange={(e) => setEditCategory(e.target.value)}
+                className="w-full px-3 py-2 bg-slate-900 border border-white/10 rounded-xl text-slate-300 text-xs focus:outline-none"
+              >
+                <option value="">No Category</option>
+                {categories.map(c => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
             </div>
 
-            <form onSubmit={handleEditSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Category
-                </label>
-                <select
-                  value={editCategory}
-                  onChange={(e) => setEditCategory(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-900 border border-white/10 rounded-xl text-slate-300 text-xs focus:outline-none"
-                >
-                  <option value="">No Category</option>
-                  {categories.map(c => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
-                  ))}
-                </select>
-              </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                Duration (Minutes)
+              </label>
+              <input
+                type="number"
+                required
+                min="1"
+                value={editDurationMinutes}
+                onChange={(e) => setEditDurationMinutes(e.target.value)}
+                className="w-full px-3 py-2 bg-slate-900 border border-white/10 rounded-xl text-slate-100 text-xs focus:outline-none"
+              />
+            </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Duration (Minutes)
-                </label>
-                <input
-                  type="number"
-                  required
-                  min="1"
-                  value={editDurationMinutes}
-                  onChange={(e) => setEditDurationMinutes(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-900 border border-white/10 rounded-xl text-slate-100 text-xs focus:outline-none"
-                />
-              </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                What did you work on?
+              </label>
+              <input
+                type="text"
+                required
+                value={editWorkedOn}
+                onChange={(e) => setEditWorkedOn(e.target.value)}
+                className="w-full px-3 py-2 bg-slate-900 border border-white/10 rounded-xl text-slate-100 text-xs focus:outline-none"
+              />
+            </div>
 
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  What did you work on?
+                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                  Next Task Goal
                 </label>
                 <input
                   type="text"
-                  required
-                  value={editWorkedOn}
-                  onChange={(e) => setEditWorkedOn(e.target.value)}
+                  value={editNextTask}
+                  onChange={(e) => setEditNextTask(e.target.value)}
                   className="w-full px-3 py-2 bg-slate-900 border border-white/10 rounded-xl text-slate-100 text-xs focus:outline-none"
                 />
               </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
-                    Next Task Goal
-                  </label>
-                  <input
-                    type="text"
-                    value={editNextTask}
-                    onChange={(e) => setEditNextTask(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-900 border border-white/10 rounded-xl text-slate-100 text-xs focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
-                    Reason Stopped
-                  </label>
-                  <input
-                    type="text"
-                    value={editStopReason}
-                    onChange={(e) => setEditStopReason(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-900 border border-white/10 rounded-xl text-slate-100 text-xs focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="border-t border-white/5 pt-3">
-                <label className="block text-xs font-semibold text-amber-400 uppercase tracking-wider mb-1.5">
-                  Reason for Edit <span className="text-rose-500">*</span>
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                  Reason Stopped
                 </label>
                 <input
                   type="text"
-                  required
-                  placeholder="e.g. Corrected category, adjusted duration error"
-                  value={editReason}
-                  onChange={(e) => setEditReason(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-slate-900 border border-amber-500/20 rounded-xl text-slate-100 text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                  value={editStopReason}
+                  onChange={(e) => setEditStopReason(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-900 border border-white/10 rounded-xl text-slate-100 text-xs focus:outline-none"
                 />
               </div>
+            </div>
 
-              <div className="flex justify-end space-x-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setEditingSession(null)}
-                  className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs"
-                >
-                  Update Session
-                </button>
-              </div>
-            </form>
-          </div>
+            <div className="border-t border-white/5 pt-3">
+              <label className="block text-xs font-semibold text-amber-400 uppercase tracking-wider mb-1.5">
+                Reason for Edit <span className="text-rose-500">*</span>
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="e.g. Corrected category, adjusted duration error"
+                value={editReason}
+                onChange={(e) => setEditReason(e.target.value)}
+                className="w-full px-3 py-2.5 bg-slate-900 border border-amber-500/20 rounded-xl text-slate-100 text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+
+            <div className="flex justify-end space-x-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setEditingSession(null)}
+                className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 active-press"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs active-press"
+              >
+                Update Session
+              </button>
+            </div>
+          </form>
         </div>
-      )}
+      </div>
     </div>
   );
 };

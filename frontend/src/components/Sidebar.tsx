@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useTimer } from '../context/TimerContext';
 import { api } from '../services/api';
-import { LayoutDashboard, History, Calendar, LogOut } from 'lucide-react';
+import { LayoutDashboard, History, Calendar, LogOut, Flame } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
@@ -50,12 +50,12 @@ export const Sidebar: React.FC = () => {
         {/* Links */}
         <nav className="px-3 space-y-1">
           <NavLink
-            to="/"
+            to="/dashboard"
             className={({ isActive }) =>
-              `flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+              `flex items-center px-4 py-3 rounded-lg text-sm font-medium sidebar-link border active-press ${
                 isActive
-                  ? 'bg-indigo-600/10 text-indigo-400 border border-indigo-500/20'
-                  : 'text-slate-400 hover:bg-slate-900/40 hover:text-slate-200'
+                  ? 'bg-indigo-600/10 text-indigo-400 border-indigo-500/20'
+                  : 'text-slate-400 hover:bg-slate-900/40 hover:text-slate-200 border-transparent'
               }`
             }
           >
@@ -66,10 +66,10 @@ export const Sidebar: React.FC = () => {
           <NavLink
             to="/history"
             className={({ isActive }) =>
-              `flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+              `flex items-center px-4 py-3 rounded-lg text-sm font-medium sidebar-link border active-press ${
                 isActive
-                  ? 'bg-indigo-600/10 text-indigo-400 border border-indigo-500/20'
-                  : 'text-slate-400 hover:bg-slate-900/40 hover:text-slate-200'
+                  ? 'bg-indigo-600/10 text-indigo-400 border-indigo-500/20'
+                  : 'text-slate-400 hover:bg-slate-900/40 hover:text-slate-200 border-transparent'
               }`
             }
           >
@@ -80,22 +80,41 @@ export const Sidebar: React.FC = () => {
           <NavLink
             to="/calendar"
             className={({ isActive }) =>
-              `flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+              `flex items-center px-4 py-3 rounded-lg text-sm font-medium sidebar-link border active-press ${
                 isActive
-                  ? 'bg-indigo-600/10 text-indigo-400 border border-indigo-500/20'
-                  : 'text-slate-400 hover:bg-slate-900/40 hover:text-slate-200'
+                  ? 'bg-indigo-600/10 text-indigo-400 border-indigo-500/20'
+                  : 'text-slate-400 hover:bg-slate-900/40 hover:text-slate-200 border-transparent'
               }`
             }
           >
             <Calendar className="w-5 h-5 mr-3" />
             Calendar
           </NavLink>
+
+          <NavLink
+            to="/physics-prep"
+            className={({ isActive }) =>
+              `flex items-center px-4 py-3 rounded-lg text-sm font-medium sidebar-link border active-press ${
+                isActive
+                  ? 'bg-indigo-600/10 text-indigo-400 border-indigo-500/20'
+                  : 'text-slate-400 hover:bg-slate-900/40 hover:text-slate-200 border-transparent'
+              }`
+            }
+          >
+            <Flame className="w-5 h-5 mr-3 text-pink-500 animate-pulse" />
+            Physics Prep
+          </NavLink>
         </nav>
       </div>
 
       {/* Footer Timer Status & Logout */}
-      <div className="p-4 border-t border-darkBorder space-y-4">
-        {status !== 'idle' && (
+      <div className="p-4 border-t border-darkBorder">
+        {/* Animated Timer Box wrapper */}
+        <div 
+          className={`transition-all duration-300 ease-[var(--ease-out-expo)] overflow-hidden ${
+            status !== 'idle' ? 'max-h-[160px] opacity-100 mb-4' : 'max-h-0 opacity-0 mb-0 pointer-events-none'
+          }`}
+        >
           <div className="p-3 rounded-xl bg-slate-900/80 border border-indigo-500/20 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-2 h-2 rounded-full bg-indigo-500 m-2 animate-ping" />
             <div className="flex items-center space-x-2 text-xs text-indigo-400 font-medium mb-1">
@@ -114,11 +133,11 @@ export const Sidebar: React.FC = () => {
               </span>
             )}
           </div>
-        )}
+        </div>
 
         <button
           onClick={handleLogout}
-          className="w-full flex items-center px-4 py-2.5 rounded-lg text-sm font-medium text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-colors border border-transparent hover:border-rose-500/20"
+          className="w-full flex items-center px-4 py-2.5 rounded-lg text-sm font-medium text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-colors border border-transparent hover:border-rose-500/20 active-press"
         >
           <LogOut className="w-5 h-5 mr-3" />
           Logout

@@ -3,11 +3,13 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom
 import { TimerProvider } from './context/TimerContext';
 import { Sidebar } from './components/Sidebar';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Dashboard } from './pages/Dashboard';
 import { History } from './pages/History';
 import { CalendarView } from './pages/CalendarView';
+import { PhysicsPrep } from './pages/PhysicsPrep';
 
 const Layout: React.FC = () => {
   return (
@@ -25,12 +27,16 @@ export const App: React.FC = () => {
     <Router>
       <TimerProvider>
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-            <Route index element={<Dashboard />} />
-            <Route path="history" element={<History />} />
-            <Route path="calendar" element={<CalendarView />} />
+          
+          {/* Protected Application Routes under Shared Sidebar Layout */}
+          <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/history" element={<History />} />
+            <Route path="/calendar" element={<CalendarView />} />
+            <Route path="/physics-prep" element={<PhysicsPrep />} />
           </Route>
         </Routes>
       </TimerProvider>

@@ -1,71 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Custom premium easing curves */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    /* System color additions for depth */
+    --color-bg-dark: #02040a;
+    --color-border-subtle: rgba(255, 255, 255, 0.05);
+    --color-border-hover: rgba(255, 255, 255, 0.12);
+  }
+
   body {
-    background-color: #030712;
+    background-color: var(--color-bg-dark);
     background-image: 
-      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
-      radial-gradient(at 50% 0%, rgba(139, 92, 246, 0.05) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.08) 0px, transparent 50%);
+      radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.07) 0px, transparent 55%),
+      radial-gradient(at 50% 0%, rgba(139, 92, 246, 0.04) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.06) 0px, transparent 55%);
     background-attachment: fixed;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Archivo', sans-serif;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  
+  code, pre {
+    font-family: 'JetBrains Mono', monospace;
   }
 }
 
+/* Glass panel foundations */
 .glass-panel {
-  background: rgba(17, 24, 39, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  background: rgba(10, 14, 26, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
 }
 
 .glass-panel-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 250ms var(--ease-out-expo), 
+              border-color 250ms var(--ease-out-expo), 
+              transform 250ms var(--ease-out-expo), 
+              box-shadow 250ms var(--ease-out-expo);
 }
 
 .glass-panel-hover:hover {
-  background: rgba(24, 32, 55, 0.75);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(18, 25, 47, 0.75);
+  border-color: var(--color-border-hover);
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.55);
 }
 
+/* Tactile Active Press Feedback */
+.active-press {
+  transition: transform 150ms var(--ease-out-expo), opacity 150ms var(--ease-out-expo);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .active-press:hover {
+    filter: brightness(1.05);
+  }
+}
+
+.active-press:active {
+  transform: scale(0.96) !important;
+  opacity: 0.9;
+}
+
+/* Sidebar nav link style */
+.sidebar-link {
+  transition: background-color 200ms var(--ease-out-expo), 
+              color 200ms var(--ease-out-expo), 
+              border-color 200ms var(--ease-out-expo),
+              transform 150ms var(--ease-out-expo);
+}
+
+.sidebar-link:active {
+  transform: scale(0.97);
+}
+
+/* Stagger Entry Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-item {
+  opacity: 0;
+  animation: fadeInUp 500ms var(--ease-out-expo) forwards;
+}
+
+.stagger-1 { animation-delay: 40ms; }
+.stagger-2 { animation-delay: 80ms; }
+.stagger-3 { animation-delay: 120ms; }
+.stagger-4 { animation-delay: 160ms; }
+.stagger-5 { animation-delay: 200ms; }
+.stagger-6 { animation-delay: 240ms; }
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(3, 7, 18, 0.5);
+  background: rgba(2, 4, 10, 0.3);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.18);
 }
 
+/* Animated Ring for Timer */
 @keyframes pulse-ring {
   0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.5);
+    transform: scale(0.97);
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.3);
   }
   70% {
-    transform: scale(1);
-    box-shadow: 0 0 0 12px rgba(99, 102, 241, 0);
+    transform: scale(1.01);
+    box-shadow: 0 0 0 16px rgba(99, 102, 241, 0);
   }
   100% {
-    transform: scale(0.95);
+    transform: scale(0.97);
     box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
   }
 }
 
 .animate-pulse-ring {
-  animation: pulse-ring 2s infinite;
+  animation: pulse-ring 2.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+/* Custom modal container animation */
+.modal-overlay {
+  transition: opacity 300ms var(--ease-out-expo);
+}
+
+.modal-content {
+  transition: transform 300ms var(--ease-drawer), opacity 300ms var(--ease-out-expo);
 }

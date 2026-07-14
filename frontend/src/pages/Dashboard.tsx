@@ -201,38 +201,42 @@ export const Dashboard: React.FC = () => {
       </header>
 
       {/* Sleep Warning Banner */}
-      {sleepWarning?.show && (
+      <div 
+        className={`transition-all duration-500 ease-[var(--ease-out-expo)] overflow-hidden ${
+          sleepWarning?.show ? 'max-h-[200px] opacity-100 mb-6' : 'max-h-0 opacity-0 mb-0 pointer-events-none'
+        }`}
+      >
         <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/25 flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
           <div className="flex items-center space-x-3 text-amber-300">
             <AlertTriangle className="w-6 h-6 flex-shrink-0 animate-bounce" />
             <div>
               <p className="text-sm font-semibold">Laptop Sleep Detected</p>
               <p className="text-xs text-amber-400/90">
-                Your device was sleeping. Do you want to include the inactive {Math.round(sleepWarning.duration / 60)} minutes in your study session?
+                Your device was sleeping. Do you want to include the inactive {Math.round(sleepWarning ? sleepWarning.duration / 60 : 0)} minutes in your study session?
               </p>
             </div>
           </div>
           <div className="flex space-x-3">
             <button
               onClick={() => resolveSleepWarning(true)}
-              className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs transition-colors"
+              className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs active-press"
             >
               Include Time
             </button>
             <button
               onClick={() => resolveSleepWarning(false)}
-              className="px-4 py-2 rounded-lg bg-transparent border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 font-bold text-xs transition-colors"
+              className="px-4 py-2 rounded-lg bg-transparent border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 font-bold text-xs active-press"
             >
               Discard Inactive
             </button>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Main stats counters */}
       {stats && (
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="glass-panel p-6 rounded-2xl relative overflow-hidden">
+          <div className="glass-panel p-6 rounded-2xl relative overflow-hidden stagger-item stagger-1">
             <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl" />
             <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
               <span>Today's Study</span>
@@ -242,7 +246,7 @@ export const Dashboard: React.FC = () => {
             <p className="text-xs text-slate-500 mt-2">Hours completed today</p>
           </div>
 
-          <div className="glass-panel p-6 rounded-2xl relative overflow-hidden">
+          <div className="glass-panel p-6 rounded-2xl relative overflow-hidden stagger-item stagger-2">
             <div className="absolute top-0 right-0 w-24 h-24 bg-pink-500/5 rounded-full blur-2xl" />
             <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
               <span>This Week</span>
@@ -260,7 +264,7 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="glass-panel p-6 rounded-2xl relative overflow-hidden">
+          <div className="glass-panel p-6 rounded-2xl relative overflow-hidden stagger-item stagger-3">
             <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl" />
             <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
               <span>Weekly Remaining</span>
@@ -270,7 +274,7 @@ export const Dashboard: React.FC = () => {
             <p className="text-xs text-slate-500 mt-2">Required to meet your goal</p>
           </div>
 
-          <div className="glass-panel p-6 rounded-2xl relative overflow-hidden">
+          <div className="glass-panel p-6 rounded-2xl relative overflow-hidden stagger-item stagger-4">
             <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl" />
             <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
               <span>Lifetime Study</span>
@@ -286,13 +290,13 @@ export const Dashboard: React.FC = () => {
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         {/* Category Selection Card */}
-        <div className="lg:col-span-5 glass-panel p-6 rounded-2xl flex flex-col justify-between">
+        <div className="lg:col-span-5 glass-panel p-6 rounded-2xl flex flex-col justify-between stagger-item stagger-3">
           <div>
             <div className="flex items-center justify-between border-b border-darkBorder pb-4 mb-4">
               <h2 className="text-lg font-bold text-white">Select Category</h2>
               <button
                 onClick={() => setShowAddCategory(!showAddCategory)}
-                className="p-1.5 rounded-lg bg-slate-900 border border-white/5 hover:border-indigo-500/40 text-slate-300 hover:text-indigo-400 transition-colors"
+                className="p-1.5 rounded-lg bg-slate-900 border border-white/5 hover:border-indigo-500/40 text-slate-300 hover:text-indigo-400 transition-colors active-press"
               >
                 <Plus className="w-4 h-4" />
               </button>
@@ -306,7 +310,7 @@ export const Dashboard: React.FC = () => {
 
             {/* Dynamic Add Category Form */}
             {showAddCategory && (
-              <form onSubmit={handleAddCategory} className="p-3 bg-slate-900/80 border border-white/5 rounded-xl space-y-3 mb-4">
+              <form onSubmit={handleAddCategory} className="p-3 bg-slate-900/80 border border-white/5 rounded-xl space-y-3 mb-4 animate-fade-in">
                 <input
                   type="text"
                   required
@@ -322,20 +326,20 @@ export const Dashboard: React.FC = () => {
                       type="color"
                       value={newCatColor}
                       onChange={(e) => setNewCatColor(e.target.value)}
-                      className="w-8 h-8 rounded cursor-pointer border-0 bg-transparent"
+                      className="w-8 h-8 rounded cursor-pointer border-0 bg-transparent active-press"
                     />
                   </div>
                   <div className="flex space-x-2">
                     <button
                       type="button"
                       onClick={() => setShowAddCategory(false)}
-                      className="px-2.5 py-1 text-[10px] text-slate-400 hover:text-slate-200"
+                      className="px-2.5 py-1 text-[10px] text-slate-400 hover:text-slate-200 active-press"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-[10px]"
+                      className="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-[10px] active-press"
                     >
                       Add
                     </button>
@@ -354,7 +358,7 @@ export const Dashboard: React.FC = () => {
                 <button
                   onClick={() => setSelectedCategory(null)}
                   disabled={status !== 'idle'}
-                  className={`flex items-center justify-between p-3 rounded-xl border text-left transition-all ${
+                  className={`flex items-center justify-between p-3 rounded-xl border text-left transition-all active-press ${
                     selectedCategory === null
                       ? 'bg-indigo-600/10 border-indigo-500/30 text-indigo-300'
                       : 'bg-slate-900/40 border-white/5 text-slate-400 hover:bg-slate-900/60'
@@ -369,7 +373,7 @@ export const Dashboard: React.FC = () => {
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat)}
                     disabled={status !== 'idle'}
-                    className={`group flex items-center justify-between p-3 rounded-xl border text-left transition-all relative overflow-hidden ${
+                    className={`group flex items-center justify-between p-3 rounded-xl border text-left transition-all relative overflow-hidden active-press ${
                       selectedCategory?.id === cat.id
                         ? 'bg-indigo-600/10 border-indigo-500/30 text-indigo-300'
                         : 'bg-slate-900/40 border-white/5 text-slate-400 hover:bg-slate-900/60'
@@ -381,7 +385,7 @@ export const Dashboard: React.FC = () => {
                       {status === 'idle' && (
                         <button
                           onClick={(e) => handleDeleteCategory(cat.id, e)}
-                          className="opacity-0 group-hover:opacity-100 text-rose-500 hover:text-rose-400 p-0.5 rounded transition-opacity"
+                          className="opacity-0 group-hover:opacity-100 text-rose-500 hover:text-rose-400 p-0.5 rounded transition-opacity active-press"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -404,7 +408,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Circular Timer Widget */}
-        <div className="lg:col-span-7 glass-panel p-6 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden">
+        <div className="lg:col-span-7 glass-panel p-6 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden stagger-item stagger-4">
           
           {/* Radial animated ring when running */}
           <div className="flex flex-col items-center space-y-6 z-10 py-6">
@@ -433,7 +437,7 @@ export const Dashboard: React.FC = () => {
                 {/* Selected Category Label */}
                 {selectedCategory && (
                   <span
-                    className="mt-2.5 px-2.5 py-0.5 rounded text-[10px] font-semibold tracking-wider"
+                    className="mt-2.5 px-2.5 py-0.5 rounded text-[10px] font-semibold tracking-wider transition-all"
                     style={{ backgroundColor: `${selectedCategory.color}20`, color: selectedCategory.color, border: `1px solid ${selectedCategory.color}40` }}
                   >
                     {selectedCategory.name}
@@ -447,7 +451,7 @@ export const Dashboard: React.FC = () => {
               {status === 'idle' && (
                 <button
                   onClick={handleStartTimer}
-                  className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-semibold tracking-wider transition-all flex items-center shadow-lg shadow-indigo-600/20"
+                  className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-semibold tracking-wider transition-all flex items-center shadow-lg shadow-indigo-600/20 active-press"
                 >
                   <Play className="w-4 h-4 mr-2 fill-current" />
                   Start Timer
@@ -458,14 +462,14 @@ export const Dashboard: React.FC = () => {
                 <>
                   <button
                     onClick={pauseTimer}
-                    className="px-5 py-3 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-400 rounded-xl text-sm font-semibold transition-all flex items-center"
+                    className="px-5 py-3 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-400 rounded-xl text-sm font-semibold transition-all flex items-center active-press"
                   >
                     <Pause className="w-4 h-4 mr-2" />
                     Pause
                   </button>
                   <button
                     onClick={() => setShowStopModal(true)}
-                    className="px-5 py-3 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-sm font-semibold tracking-wider transition-all flex items-center shadow-lg shadow-rose-600/10"
+                    className="px-5 py-3 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-sm font-semibold tracking-wider transition-all flex items-center shadow-lg shadow-rose-600/10 active-press"
                   >
                     <Square className="w-4 h-4 mr-2 fill-current" />
                     Finish Session
@@ -477,7 +481,7 @@ export const Dashboard: React.FC = () => {
                 <>
                   <button
                     onClick={resumeTimer}
-                    className="px-5 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-semibold transition-all flex items-center shadow-lg shadow-indigo-600/10"
+                    className="px-5 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-semibold transition-all flex items-center shadow-lg shadow-indigo-600/10 active-press"
                   >
                     <Play className="w-4 h-4 mr-2 fill-current" />
                     Resume
@@ -488,7 +492,7 @@ export const Dashboard: React.FC = () => {
                         discardTimer();
                       }
                     }}
-                    className="px-5 py-3 bg-slate-900 border border-white/5 hover:bg-slate-800 text-slate-400 hover:text-slate-200 rounded-xl text-sm font-semibold transition-all"
+                    className="px-5 py-3 bg-slate-900 border border-white/5 hover:bg-slate-800 text-slate-400 hover:text-slate-200 rounded-xl text-sm font-semibold transition-all active-press"
                   >
                     Discard
                   </button>
@@ -503,7 +507,7 @@ export const Dashboard: React.FC = () => {
       {stats && (
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Main Chart */}
-          <div className="lg:col-span-8 glass-panel p-6 rounded-2xl flex flex-col justify-between">
+          <div className="lg:col-span-8 glass-panel p-6 rounded-2xl flex flex-col justify-between stagger-item stagger-5">
             <div className="flex items-center justify-between border-b border-darkBorder pb-4 mb-6">
               <h2 className="text-lg font-bold text-white">Study History</h2>
               
@@ -512,7 +516,7 @@ export const Dashboard: React.FC = () => {
                   <button
                     key={view}
                     onClick={() => setChartView(view)}
-                    className={`px-3 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider transition-all ${
+                    className={`px-3 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider transition-all active-press ${
                       chartView === view 
                         ? 'bg-indigo-600 text-white' 
                         : 'text-slate-400 hover:text-slate-200'
@@ -561,7 +565,7 @@ export const Dashboard: React.FC = () => {
           </div>
 
           {/* Category Distribution Pie Chart */}
-          <div className="lg:col-span-4 glass-panel p-6 rounded-2xl flex flex-col justify-between">
+          <div className="lg:col-span-4 glass-panel p-6 rounded-2xl flex flex-col justify-between stagger-item stagger-6">
             <div className="border-b border-darkBorder pb-4 mb-4">
               <h2 className="text-lg font-bold text-white">Skill Allocation</h2>
               <p className="text-xs text-slate-500 mt-1">Time distribution per category</p>
@@ -605,145 +609,157 @@ export const Dashboard: React.FC = () => {
       )}
 
       {/* Edit Weekly Goal Modal */}
-      {showGoalModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="w-full max-w-sm glass-panel p-6 rounded-2xl space-y-4">
+      <div 
+        className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md modal-overlay ${
+          showGoalModal ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <div 
+          className={`w-full max-w-sm glass-panel p-6 rounded-2xl space-y-4 modal-content ${
+            showGoalModal ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4'
+          }`}
+        >
+          <div>
+            <h3 className="text-lg font-bold text-white">Set Weekly Goal</h3>
+            <p className="text-xs text-slate-400 mt-1">Adjust target hours of deep study per week.</p>
+          </div>
+
+          <form onSubmit={handleUpdateGoal} className="space-y-4">
             <div>
-              <h3 className="text-lg font-bold text-white">Set Weekly Goal</h3>
-              <p className="text-xs text-slate-400 mt-1">Adjust target hours of deep study per week.</p>
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                Goal Hours
+              </label>
+              <input
+                type="number"
+                min="1"
+                max="168"
+                required
+                value={editGoalHours}
+                onChange={(e) => setEditGoalHours(e.target.value)}
+                className="w-full px-3 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-slate-100 focus:outline-none focus:border-indigo-500"
+              />
             </div>
 
-            <form onSubmit={handleUpdateGoal} className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                  Goal Hours
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  max="168"
-                  required
-                  value={editGoalHours}
-                  onChange={(e) => setEditGoalHours(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-slate-100 focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-
-              <div className="flex justify-end space-x-2">
-                <button
-                  type="button"
-                  onClick={() => setShowGoalModal(false)}
-                  className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs"
-                >
-                  Save Goal
-                </button>
-              </div>
-            </form>
-          </div>
+            <div className="flex justify-end space-x-2">
+              <button
+                type="button"
+                onClick={() => setShowGoalModal(false)}
+                className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 active-press"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs active-press"
+              >
+                Save Goal
+              </button>
+            </div>
+          </form>
         </div>
-      )}
+      </div>
 
       {/* Stop Session Completion Modal */}
-      {showStopModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="w-full max-w-md glass-panel p-6 rounded-2xl space-y-4">
+      <div 
+        className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md modal-overlay ${
+          showStopModal ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <div 
+          className={`w-full max-w-md glass-panel p-6 rounded-2xl space-y-4 modal-content ${
+            showStopModal ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4'
+          }`}
+        >
+          <div>
+            <h3 className="text-lg font-bold text-white">Complete Study Session</h3>
+            <p className="text-xs text-slate-400 mt-1">Provide feedback before recording your session details.</p>
+          </div>
+
+          <form onSubmit={handleStopTimerSubmit} className="space-y-4">
             <div>
-              <h3 className="text-lg font-bold text-white">Complete Study Session</h3>
-              <p className="text-xs text-slate-400 mt-1">Provide feedback before recording your session details.</p>
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                What did you work on? <span className="text-rose-500">*</span>
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="e.g. Worked on Dynamic Programming on Trees"
+                value={workedOn}
+                onChange={(e) => setWorkedOn(e.target.value)}
+                className="w-full px-3 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-slate-100 text-xs placeholder:text-slate-500 focus:outline-none focus:border-indigo-500"
+              />
             </div>
 
-            <form onSubmit={handleStopTimerSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  What did you work on? <span className="text-rose-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Worked on Dynamic Programming on Trees"
-                  value={workedOn}
-                  onChange={(e) => setWorkedOn(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-slate-100 text-xs placeholder:text-slate-500 focus:outline-none focus:border-indigo-500"
-                />
-              </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                What is the next task?
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. Practice 3 tree problems on Codeforces"
+                value={nextTask}
+                onChange={(e) => setNextTask(e.target.value)}
+                className="w-full px-3 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-slate-100 text-xs placeholder:text-slate-500 focus:outline-none focus:border-indigo-500"
+              />
+            </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  What is the next task?
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Practice 3 tree problems on Codeforces"
-                  value={nextTask}
-                  onChange={(e) => setNextTask(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-slate-100 text-xs placeholder:text-slate-500 focus:outline-none focus:border-indigo-500"
-                />
-              </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                Why did you stop?
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. Lunch break, tired, completed goals"
+                value={stopReason}
+                onChange={(e) => setStopReason(e.target.value)}
+                className="w-full px-3 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-slate-100 text-xs placeholder:text-slate-500 focus:outline-none focus:border-indigo-500"
+              />
+            </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Why did you stop?
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                Attach Video / Study Clip (Optional)
+              </label>
+              <div className="flex items-center space-x-3">
+                <label className="flex items-center justify-center px-4 py-2 border border-dashed border-white/15 hover:border-indigo-500/40 rounded-xl cursor-pointer text-slate-400 hover:text-indigo-400 bg-slate-900/60 transition-all active-press">
+                  <Upload className="w-4 h-4 mr-2" />
+                  <span className="text-xs font-semibold">Select File</span>
+                  <input
+                    type="file"
+                    accept="video/*"
+                    className="hidden"
+                    onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
+                  />
                 </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Lunch break, tired, completed goals"
-                  value={stopReason}
-                  onChange={(e) => setStopReason(e.target.value)}
-                  className="w-full px-3 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-slate-100 text-xs placeholder:text-slate-500 focus:outline-none focus:border-indigo-500"
-                />
+                <span className="text-[10px] text-slate-500 truncate max-w-40">
+                  {videoFile ? videoFile.name : 'No file selected (Max 30s)'}
+                </span>
               </div>
+            </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Attach Video / Study Clip (Optional)
-                </label>
-                <div className="flex items-center space-x-3">
-                  <label className="flex items-center justify-center px-4 py-2 border border-dashed border-white/15 hover:border-indigo-500/40 rounded-xl cursor-pointer text-slate-400 hover:text-indigo-400 bg-slate-900/60 transition-all">
-                    <Upload className="w-4 h-4 mr-2" />
-                    <span className="text-xs font-semibold">Select File</span>
-                    <input
-                      type="file"
-                      accept="video/*"
-                      className="hidden"
-                      onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
-                    />
-                  </label>
-                  <span className="text-[10px] text-slate-500 truncate max-w-40">
-                    {videoFile ? videoFile.name : 'No file selected (Max 30s)'}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex justify-end space-x-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowStopModal(false)}
-                  className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={uploading}
-                  className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs flex items-center space-x-2"
-                >
-                  {uploading ? (
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : (
-                    <span>Save Session</span>
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
+            <div className="flex justify-end space-x-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowStopModal(false)}
+                className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 active-press"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={uploading}
+                className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs flex items-center space-x-2 active-press"
+              >
+                {uploading ? (
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <span>Save Session</span>
+                )}
+              </button>
+            </div>
+          </form>
         </div>
-      )}
+      </div>
     </div>
   );
 };

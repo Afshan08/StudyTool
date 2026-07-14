@@ -17,7 +17,7 @@ export const Login: React.FC = () => {
     try {
       await api.login(username, password);
       // Wait for login context to settle, then redirect
-      window.location.href = '/';
+      window.location.href = '/dashboard';
     } catch (err: any) {
       setError(err.message || 'Login failed. Please check your credentials.');
     } finally {
@@ -31,7 +31,7 @@ export const Login: React.FC = () => {
       <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
       <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl" />
 
-      <div className="w-full max-w-md glass-panel p-8 rounded-2xl relative z-10">
+      <div className="w-full max-w-md glass-panel p-8 rounded-2xl relative z-10 stagger-item stagger-1">
         <div className="text-center mb-8">
           <div className="w-12 h-12 rounded-xl bg-indigo-600 flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-indigo-500/30 mx-auto mb-4">
             F
