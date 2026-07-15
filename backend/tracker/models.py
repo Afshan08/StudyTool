@@ -24,6 +24,8 @@ class StudySession(models.Model):
     next_task = models.TextField(blank=True, default='')
     stop_reason = models.TextField(blank=True, default='')
     is_deleted = models.BooleanField(default=False)
+    is_paused = models.BooleanField(default=False)
+    last_start_time = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

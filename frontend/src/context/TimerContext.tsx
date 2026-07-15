@@ -10,8 +10,8 @@ interface TimerContextType {
   activeSession: StudySession | null;
   selectedCategory: Category | null;
   startTimer: (category: Category | null) => Promise<void>;
-  pauseTimer: () => void;
-  resumeTimer: () => void;
+  pauseTimer: () => Promise<void>;
+  resumeTimer: () => Promise<void>;
   stopTimer: (workedOn: string, nextTask: string, stopReason: string, videoFile: File | null) => Promise<void>;
   discardTimer: () => Promise<void>;
   setSelectedCategory: (category: Category | null) => void;
@@ -82,17 +82,28 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setActiveSession(backendSession);
         setSelectedCategory(backendSession.category_details);
         
-        // Recover start time
-        const startTime = new Date(backendSession.start_time).getTime();
-        const now = Date.now();
-        const calculatedSeconds = Math.max(0, Math.floor((now - startTime) / 1000));
+        const isPaused = backendSession.is_paused;
+        const accumulated = backendSession.duration || 0;
         
-        setStatus('running');
-        setElapsedSeconds(calculatedSeconds);
-        
-        // Save to local storage for crash recovery
-        localStorage.setItem('timer_start_time', String(startTime));
-        localStorage.setItem('timer_status', 'running');
+        if (isPaused) {
+          setStatus('paused');
+          setElapsedSeconds(accumulated);
+          
+          localStorage.setItem('timer_status', 'paused');
+          localStorage.setItem('timer_accumulated_seconds', String(accumulated));
+          localStorage.removeItem('timer_start_time');
+        } else {
+          const lastStart = new Date(backendSession.last_start_time || backendSession.start_time).getTime();
+          const now = Date.now();
+          const calculatedSeconds = accumulated + Math.max(0, Math.floor((now - lastStart) / 1000));
+          
+          setStatus('running');
+          setElapsedSeconds(calculatedSeconds);
+          
+          localStorage.setItem('timer_start_time', String(lastStart));
+          localStorage.setItem('timer_status', 'running');
+          localStorage.setItem('timer_accumulated_seconds', String(accumulated));
+        }
         localStorage.setItem('active_session_id', String(backendSession.id));
       } else {
         // Check local storage for any sync discrepancies
@@ -104,6 +115,7 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setStatus('idle');
         setElapsedSeconds(0);
         setActiveSession(null);
+        setSelectedCategory(null);
       }
     } catch (err) {
       // Offline fallback: load from local storage
@@ -183,33 +195,48 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     broadcastState('running', 0, session, category);
   };
 
-  const pauseTimer = () => {
+  const pauseTimer = async () => {
     if (status !== 'running') return;
     
-    const now = Date.now();
-    const localStart = Number(localStorage.getItem('timer_start_time') || now);
-    const accumulated = Number(localStorage.getItem('timer_accumulated_seconds') || 0);
-    const currentSessionSeconds = Math.floor((now - localStart) / 1000);
-    const totalAccumulated = accumulated + currentSessionSeconds;
+    try {
+      const updatedSession = await api.pauseSession();
+      setActiveSession(updatedSession);
+      
+      const now = Date.now();
+      const localStart = Number(localStorage.getItem('timer_start_time') || now);
+      const accumulated = Number(localStorage.getItem('timer_accumulated_seconds') || 0);
+      const currentSessionSeconds = Math.floor((now - localStart) / 1000);
+      const totalAccumulated = accumulated + currentSessionSeconds;
 
-    localStorage.setItem('timer_status', 'paused');
-    localStorage.setItem('timer_accumulated_seconds', String(totalAccumulated));
-    localStorage.removeItem('timer_start_time');
+      localStorage.setItem('timer_status', 'paused');
+      localStorage.setItem('timer_accumulated_seconds', String(totalAccumulated));
+      localStorage.removeItem('timer_start_time');
 
-    setStatus('paused');
-    setElapsedSeconds(totalAccumulated);
-    broadcastState('paused', totalAccumulated, activeSession, selectedCategory);
+      setStatus('paused');
+      setElapsedSeconds(totalAccumulated);
+      broadcastState('paused', totalAccumulated, updatedSession, selectedCategory);
+    } catch (err) {
+      console.error("Failed to pause session on backend:", err);
+    }
   };
 
-  const resumeTimer = () => {
+  const resumeTimer = async () => {
     if (status !== 'paused') return;
 
-    const now = Date.now();
-    localStorage.setItem('timer_status', 'running');
-    localStorage.setItem('timer_start_time', String(now));
+    try {
+      const updatedSession = await api.resumeSession();
+      setActiveSession(updatedSession);
+      
+      const now = Date.now();
+      localStorage.setItem('timer_status', 'running');
+      localStorage.setItem('timer_start_time', String(now));
+      localStorage.setItem('timer_accumulated_seconds', String(elapsedSeconds));
 
-    setStatus('running');
-    broadcastState('running', elapsedSeconds, activeSession, selectedCategory);
+      setStatus('running');
+      broadcastState('running', elapsedSeconds, updatedSession, selectedCategory);
+    } catch (err) {
+      console.error("Failed to resume session on backend:", err);
+    }
   };
 
   const stopTimer = async (workedOn: string, nextTask: string, stopReason: string, videoFile: File | null) => {

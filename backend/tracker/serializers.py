@@ -38,7 +38,8 @@ class StudySessionSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'category', 'category_details', 'start_time', 'end_time',
             'duration', 'worked_on', 'next_task', 'stop_reason',
-            'is_deleted', 'created_at', 'updated_at', 'video', 'edit_histories'
+            'is_deleted', 'created_at', 'updated_at', 'video', 'edit_histories',
+            'is_paused', 'last_start_time'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at', 'video', 'edit_histories']
 

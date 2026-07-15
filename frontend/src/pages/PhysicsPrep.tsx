@@ -3,8 +3,8 @@ import { useTimer } from '../context/TimerContext';
 import { api } from '../services/api';
 import { Category } from '../types';
 import {
-  Flame, Clock, Calendar, CheckCircle2, ChevronRight, Download, BookOpen,
-  Sparkles, CheckSquare, Square, Play, Pause, ChevronDown, ChevronUp, AlertCircle, HelpCircle,
+  Flame, Clock, Calendar, CheckCircle2, Download, BookOpen,
+  Sparkles, CheckSquare, Square, Play, Pause, ChevronDown, ChevronUp, AlertCircle,
   Cpu, Zap, Info, Compass, Shield
 } from 'lucide-react';
 

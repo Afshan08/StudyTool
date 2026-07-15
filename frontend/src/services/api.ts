@@ -165,6 +165,30 @@ export const api = {
     return res.json();
   },
 
+  async pauseSession() {
+    const res = await fetch(`${BASE_URL}/sessions/active/pause/`, {
+      method: 'POST',
+      headers: getHeaders()
+    });
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || 'Failed to pause session');
+    }
+    return res.json();
+  },
+
+  async resumeSession() {
+    const res = await fetch(`${BASE_URL}/sessions/active/resume/`, {
+      method: 'POST',
+      headers: getHeaders()
+    });
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || 'Failed to resume session');
+    }
+    return res.json();
+  },
+
   async updateSession(id: number, updates: { category?: number | null; duration?: number; worked_on?: string; next_task?: string; stop_reason?: string; reason: string }) {
     const res = await fetch(`${BASE_URL}/sessions/${id}/`, {
       method: 'PATCH',

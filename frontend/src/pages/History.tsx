@@ -3,7 +3,7 @@ import { api } from '../services/api';
 import { StudySession, Category } from '../types';
 import { 
   Search, ArrowUpDown, Edit2, Trash2, RotateCcw, AlertCircle, Calendar, 
-  Clock, Tag, Eye, ChevronDown, ChevronUp, MessageSquare 
+  Clock, Eye, MessageSquare 
 } from 'lucide-react';
 
 export const History: React.FC = () => {
@@ -140,10 +140,7 @@ export const History: React.FC = () => {
     return `${m}m`;
   };
 
-  const formatDate = (dateStr: string) => {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-  };
+
 
   const formatTime = (dateStr: string) => {
     const d = new Date(dateStr);

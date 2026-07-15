@@ -42,6 +42,8 @@ export interface StudySession {
   next_task: string;
   stop_reason: string;
   is_deleted: boolean;
+  is_paused?: boolean;
+  last_start_time?: string | null;
   created_at: string;
   updated_at: string;
   video?: VideoEntry | null;

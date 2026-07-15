@@ -94,10 +94,12 @@ class ActiveSessionView(APIView):
         if category_id:
             category = get_object_or_404(Category, id=category_id, user=request.user)
             
+        now_time = timezone.now()
         session = StudySession.objects.create(
             user=request.user,
             category=category,
-            start_time=timezone.now()
+            start_time=now_time,
+            last_start_time=now_time
         )
         serializer = StudySessionSerializer(session, context={'request': request})
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -119,7 +121,13 @@ class StopActiveSessionView(APIView):
             
         now_time = timezone.now()
         active_session.end_time = now_time
-        active_session.duration = int((now_time - active_session.start_time).total_seconds())
+        
+        # If it was running (not paused), add the elapsed time of the final segment.
+        if not active_session.is_paused and active_session.last_start_time:
+            elapsed = int((now_time - active_session.last_start_time).total_seconds())
+            active_session.duration += max(0, elapsed)
+            
+        active_session.is_paused = False
         active_session.worked_on = worked_on
         active_session.next_task = next_task
         active_session.stop_reason = stop_reason
@@ -181,6 +189,8 @@ class SessionDetailView(APIView):
         if duration is not None:
             try:
                 session.duration = int(duration)
+                if session.start_time:
+                    session.end_time = session.start_time + datetime.timedelta(seconds=session.duration)
             except ValueError:
                 return Response({'error': 'Duration must be an integer.'}, status=status.HTTP_400_BAD_REQUEST)
                 
@@ -384,3 +394,41 @@ class StatisticsView(APIView):
             }
         }
         return Response(stats_data)
+
+class PauseActiveSessionView(APIView):
+    def post(self, request):
+        active_session = StudySession.objects.filter(
+            user=request.user, end_time__isnull=True, is_deleted=False
+        ).first()
+        if not active_session:
+            return Response({'error': 'No active session found.'}, status=status.HTTP_404_NOT_FOUND)
+        if active_session.is_paused:
+            return Response({'error': 'Session is already paused.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        now_time = timezone.now()
+        if active_session.last_start_time:
+            elapsed = int((now_time - active_session.last_start_time).total_seconds())
+            active_session.duration += max(0, elapsed)
+            
+        active_session.is_paused = True
+        active_session.save()
+        
+        serializer = StudySessionSerializer(active_session, context={'request': request})
+        return Response(serializer.data)
+
+class ResumeActiveSessionView(APIView):
+    def post(self, request):
+        active_session = StudySession.objects.filter(
+            user=request.user, end_time__isnull=True, is_deleted=False
+        ).first()
+        if not active_session:
+            return Response({'error': 'No active session found.'}, status=status.HTTP_404_NOT_FOUND)
+        if not active_session.is_paused:
+            return Response({'error': 'Session is not paused.'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        active_session.last_start_time = timezone.now()
+        active_session.is_paused = False
+        active_session.save()
+        
+        serializer = StudySessionSerializer(active_session, context={'request': request})
+        return Response(serializer.data)

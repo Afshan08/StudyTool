@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
-import { StudySession, Category } from '../types';
-import { Calendar as CalendarIcon, Clock, AlertCircle } from 'lucide-react';
+import { StudySession } from '../types';
+import { AlertCircle } from 'lucide-react';
 
 export const CalendarView: React.FC = () => {
   const [sessions, setSessions] = useState<StudySession[]>([]);

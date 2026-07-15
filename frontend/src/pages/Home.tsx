@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { 
-  Clock, Flame, Trophy, Play, CheckCircle2, ChevronRight, Sparkles, 
-  ArrowRight, ShieldCheck, Video, LayoutDashboard, Calendar, History, BookOpen 
+  Clock, Flame, Trophy, Play, CheckCircle2, Sparkles, 
+  ArrowRight, ShieldCheck, Video, Calendar, History, BookOpen 
 } from 'lucide-react';
 
 export const Home: React.FC = () => {

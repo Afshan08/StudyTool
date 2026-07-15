@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTimer } from '../context/TimerContext';
 import { api } from '../services/api';
 import { Category, Stats } from '../types';
 import { 
   Clock, Flame, Trophy, Plus, Play, Pause, Square, AlertTriangle, Upload, 
-  Trash2, BookOpen, AlertCircle, FileText, CheckCircle2 
+  Trash2, BookOpen, AlertCircle 
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, PieChart, Pie, Cell } from 'recharts';
 
@@ -136,7 +136,7 @@ export const Dashboard: React.FC = () => {
   const handleUpdateGoal = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const g = await api.setGoal(Number(editGoalHours));
+      await api.setGoal(Number(editGoalHours));
       setShowGoalModal(false);
       loadStats();
     } catch (err: any) {
