@@ -172,11 +172,11 @@ export const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 p-8 overflow-y-auto space-y-8">
+    <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto space-y-6 sm:space-y-8">
       {/* Top Banner with Stream info */}
-      <header className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
         <div>
-          <h1 className="text-3xl font-extrabold text-white bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
             Journal Dashboard
           </h1>
           <p className="text-slate-400 text-sm mt-1">Distraction-free tracking for deep skill acquisition</p>
@@ -235,27 +235,27 @@ export const Dashboard: React.FC = () => {
 
       {/* Main stats counters */}
       {stats && (
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="glass-panel p-6 rounded-2xl relative overflow-hidden stagger-item stagger-1">
+        <section className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+          <div className="glass-panel p-4 sm:p-6 rounded-2xl relative overflow-hidden stagger-item stagger-1">
             <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl" />
-            <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Today's Study</span>
-              <Clock className="w-4 h-4 text-indigo-400" />
+            <div className="flex items-center justify-between text-slate-400 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-2">
+              <span>Today</span>
+              <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-400" />
             </div>
-            <p className="text-3xl font-extrabold text-white">{stats.today_hours.toFixed(2)}h</p>
-            <p className="text-xs text-slate-500 mt-2">Hours completed today</p>
+            <p className="text-2xl sm:text-3xl font-extrabold text-white">{stats.today_hours.toFixed(2)}h</p>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-2">Hours today</p>
           </div>
 
-          <div className="glass-panel p-6 rounded-2xl relative overflow-hidden stagger-item stagger-2">
+          <div className="glass-panel p-4 sm:p-6 rounded-2xl relative overflow-hidden stagger-item stagger-2">
             <div className="absolute top-0 right-0 w-24 h-24 bg-pink-500/5 rounded-full blur-2xl" />
-            <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
+            <div className="flex items-center justify-between text-slate-400 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-2">
               <span>This Week</span>
-              <Trophy className="w-4 h-4 text-pink-400" />
+              <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-pink-400" />
             </div>
-            <p className="text-3xl font-extrabold text-white">{stats.week_hours.toFixed(2)}h</p>
-            <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
+            <p className="text-2xl sm:text-3xl font-extrabold text-white">{stats.week_hours.toFixed(2)}h</p>
+            <div className="mt-1 sm:mt-2 flex items-center justify-between text-[10px] sm:text-xs text-slate-500">
               <div className="w-full bg-slate-900 border border-white/5 rounded-full h-1.5 mr-2 overflow-hidden">
-                <div 
+                <div
                   className="bg-gradient-to-r from-indigo-500 to-pink-500 h-1.5 rounded-full"
                   style={{ width: `${stats.goal_progress_percent}%` }}
                 />
@@ -264,30 +264,30 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="glass-panel p-6 rounded-2xl relative overflow-hidden stagger-item stagger-3">
+          <div className="glass-panel p-4 sm:p-6 rounded-2xl relative overflow-hidden stagger-item stagger-3">
             <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl" />
-            <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Weekly Remaining</span>
-              <BookOpen className="w-4 h-4 text-emerald-400" />
+            <div className="flex items-center justify-between text-slate-400 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-2">
+              <span>Remaining</span>
+              <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />
             </div>
-            <p className="text-3xl font-extrabold text-white">{getRemainingHoursText()}</p>
-            <p className="text-xs text-slate-500 mt-2">Required to meet your goal</p>
+            <p className="text-2xl sm:text-3xl font-extrabold text-white">{getRemainingHoursText()}</p>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-2">To meet goal</p>
           </div>
 
-          <div className="glass-panel p-6 rounded-2xl relative overflow-hidden stagger-item stagger-4">
+          <div className="glass-panel p-4 sm:p-6 rounded-2xl relative overflow-hidden stagger-item stagger-4">
             <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl" />
-            <div className="flex items-center justify-between text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Lifetime Study</span>
-              <Flame className="w-4 h-4 text-blue-400" />
+            <div className="flex items-center justify-between text-slate-400 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-2">
+              <span>Lifetime</span>
+              <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-400" />
             </div>
-            <p className="text-3xl font-extrabold text-white">{stats.lifetime_hours.toFixed(2)}h</p>
-            <p className="text-xs text-slate-500 mt-2">Total investment in skills</p>
+            <p className="text-2xl sm:text-3xl font-extrabold text-white">{stats.lifetime_hours.toFixed(2)}h</p>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-1 sm:mt-2">Total skills investment</p>
           </div>
         </section>
       )}
 
       {/* Focus Timer and Category Selector Grid */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
         
         {/* Category Selection Card */}
         <div className="lg:col-span-5 glass-panel p-6 rounded-2xl flex flex-col justify-between stagger-item stagger-3">
@@ -413,8 +413,8 @@ export const Dashboard: React.FC = () => {
           {/* Radial animated ring when running */}
           <div className="flex flex-col items-center space-y-6 z-10 py-6">
             <div className="relative flex items-center justify-center">
-              <div 
-                className={`w-64 h-64 rounded-full border-4 flex flex-col items-center justify-center transition-all ${
+              <div
+                className={`w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full border-4 flex flex-col items-center justify-center transition-all ${
                   status === 'running' 
                     ? 'border-indigo-500 shadow-[0_0_50px_rgba(99,102,241,0.2)] animate-pulse-ring' 
                     : status === 'paused'
@@ -430,7 +430,7 @@ export const Dashboard: React.FC = () => {
                 </span>
                 
                 {/* Clock Display */}
-                <h3 className="text-4xl font-extrabold tracking-wider font-mono text-white mt-1">
+                <h3 className="text-3xl sm:text-4xl font-extrabold tracking-wider font-mono text-white mt-1">
                   {formatTime(elapsedSeconds)}
                 </h3>
 
@@ -505,7 +505,7 @@ export const Dashboard: React.FC = () => {
 
       {/* Charts & Distributions */}
       {stats && (
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
           {/* Main Chart */}
           <div className="lg:col-span-8 glass-panel p-6 rounded-2xl flex flex-col justify-between stagger-item stagger-5">
             <div className="flex items-center justify-between border-b border-darkBorder pb-4 mb-6">

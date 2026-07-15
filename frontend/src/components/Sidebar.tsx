@@ -2,9 +2,13 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useTimer } from '../context/TimerContext';
 import { api } from '../services/api';
-import { LayoutDashboard, History, Calendar, LogOut, Flame } from 'lucide-react';
+import { LayoutDashboard, History, Calendar, LogOut, Flame, X } from 'lucide-react';
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  onClose?: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
   const navigate = useNavigate();
   const { status, elapsedSeconds, selectedCategory } = useTimer();
   const user = api.getUser();
@@ -21,17 +25,34 @@ export const Sidebar: React.FC = () => {
     return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
+  const handleNavClick = () => {
+    // Close the drawer on mobile after navigation
+    onClose?.();
+  };
+
   return (
     <aside className="w-64 glass-panel border-r border-darkBorder flex flex-col justify-between h-screen sticky top-0 z-20">
       <div className="flex flex-col">
-        {/* Logo */}
-        <div className="p-6 border-b border-darkBorder flex items-center space-x-3">
-          <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/30">
-            F
+        {/* Logo + mobile close button */}
+        <div className="p-6 border-b border-darkBorder flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/30">
+              F
+            </div>
+            <span className="font-semibold text-lg bg-gradient-to-r from-white via-slate-200 to-indigo-400 bg-clip-text text-transparent">
+              Focus Journal
+            </span>
           </div>
-          <span className="font-semibold text-lg bg-gradient-to-r from-white via-slate-200 to-indigo-400 bg-clip-text text-transparent">
-            Focus Journal
-          </span>
+          {/* Close button — only visible on mobile */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="md:hidden p-1.5 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-slate-900/60 transition-colors active-press"
+              aria-label="Close menu"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* User Card */}
@@ -51,6 +72,7 @@ export const Sidebar: React.FC = () => {
         <nav className="px-3 space-y-1">
           <NavLink
             to="/dashboard"
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center px-4 py-3 rounded-lg text-sm font-medium sidebar-link border active-press ${
                 isActive
@@ -65,6 +87,7 @@ export const Sidebar: React.FC = () => {
 
           <NavLink
             to="/history"
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center px-4 py-3 rounded-lg text-sm font-medium sidebar-link border active-press ${
                 isActive
@@ -79,6 +102,7 @@ export const Sidebar: React.FC = () => {
 
           <NavLink
             to="/calendar"
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center px-4 py-3 rounded-lg text-sm font-medium sidebar-link border active-press ${
                 isActive
@@ -93,6 +117,7 @@ export const Sidebar: React.FC = () => {
 
           <NavLink
             to="/physics-prep"
+            onClick={handleNavClick}
             className={({ isActive }) =>
               `flex items-center px-4 py-3 rounded-lg text-sm font-medium sidebar-link border active-press ${
                 isActive
@@ -110,7 +135,7 @@ export const Sidebar: React.FC = () => {
       {/* Footer Timer Status & Logout */}
       <div className="p-4 border-t border-darkBorder">
         {/* Animated Timer Box wrapper */}
-        <div 
+        <div
           className={`transition-all duration-300 ease-[var(--ease-out-expo)] overflow-hidden ${
             status !== 'idle' ? 'max-h-[160px] opacity-100 mb-4' : 'max-h-0 opacity-0 mb-0 pointer-events-none'
           }`}
