@@ -1,0 +1,978 @@
+[
+{
+  "model": "authtoken.token",
+  "pk": "9d8799dbdc884eff914a8daa692e7c2799d5238c",
+  "fields": {
+    "user": 1,
+    "created": "2026-06-29T08:00:06.391Z"
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$MkO99TAj31X6WMszwCpNql$XtYGzUGRVqCJqI13FY8UnJ6SqTfBdBie8wkz6q6TWIc=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "AfshanAfridi",
+    "first_name": "",
+    "last_name": "",
+    "email": "afshan@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-29T08:00:05.762Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.weeklygoal",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "hours": 40,
+    "effective_from": "2026-06-29"
+  }
+},
+{
+  "model": "accounts.weeklygoal",
+  "pk": 2,
+  "fields": {
+    "user": 1,
+    "hours": 20,
+    "effective_from": "2026-07-06"
+  }
+},
+{
+  "model": "tracker.category",
+  "pk": 2,
+  "fields": {
+    "user": 1,
+    "name": "Mathematics",
+    "color": "#ff0000",
+    "created_at": "2026-06-29T08:01:00.194Z"
+  }
+},
+{
+  "model": "tracker.category",
+  "pk": 3,
+  "fields": {
+    "user": 1,
+    "name": "CP handbook study",
+    "color": "#00ff59",
+    "created_at": "2026-06-29T13:45:49.930Z"
+  }
+},
+{
+  "model": "tracker.category",
+  "pk": 4,
+  "fields": {
+    "user": 1,
+    "name": "Communication",
+    "color": "#0037ff",
+    "created_at": "2026-06-30T10:25:04.519Z"
+  }
+},
+{
+  "model": "tracker.category",
+  "pk": 5,
+  "fields": {
+    "user": 1,
+    "name": "Physics",
+    "color": "#f1ff2e",
+    "created_at": "2026-07-01T12:31:56.254Z"
+  }
+},
+{
+  "model": "tracker.category",
+  "pk": 6,
+  "fields": {
+    "user": 1,
+    "name": "Physics Prep",
+    "color": "#EC4899",
+    "created_at": "2026-07-04T18:29:46.082Z"
+  }
+},
+{
+  "model": "tracker.category",
+  "pk": 7,
+  "fields": {
+    "user": 1,
+    "name": "Botany Prep",
+    "color": "#ffffff",
+    "created_at": "2026-07-06T14:06:38.869Z"
+  }
+},
+{
+  "model": "tracker.category",
+  "pk": 8,
+  "fields": {
+    "user": 1,
+    "name": "Planing Schdeule",
+    "color": "#6366F1",
+    "created_at": "2026-07-11T16:44:33.917Z"
+  }
+},
+{
+  "model": "tracker.category",
+  "pk": 9,
+  "fields": {
+    "user": 1,
+    "name": "Mystery Drama",
+    "color": "#6366F1",
+    "created_at": "2026-07-12T18:21:32.834Z"
+  }
+},
+{
+  "model": "tracker.category",
+  "pk": 10,
+  "fields": {
+    "user": 1,
+    "name": "Development",
+    "color": "#00850f",
+    "created_at": "2026-07-13T07:49:23.636Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "category": 2,
+    "start_time": "2026-06-29T08:01:02.052Z",
+    "end_time": "2026-06-29T08:01:57.579Z",
+    "duration": 55,
+    "worked_on": "I was testing the stuff.",
+    "next_task": "To acutually use the systtem",
+    "stop_reason": "Because I had to prepare luch for everyone",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-06-29T08:01:02.053Z",
+    "updated_at": "2026-06-29T08:01:57.579Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 2,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-06-29T13:45:52.755Z",
+    "end_time": "2026-06-29T15:23:54.381Z",
+    "duration": 5881,
+    "worked_on": "I was working on the CSES problems and I did solved one problem and learned debugging. I also setted up my ssystem with g++ compiler",
+    "next_task": "The next taks is to solve the next 3 basic problems with chapter read of time complexity from the book.",
+    "stop_reason": "Because of dinner break and after dinner I am thinking of studiying maths.",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-06-29T13:45:52.755Z",
+    "updated_at": "2026-06-29T15:23:54.381Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 3,
+  "fields": {
+    "user": 1,
+    "category": 2,
+    "start_time": "2026-06-29T17:17:27.670Z",
+    "end_time": "2026-06-29T18:29:52.786Z",
+    "duration": 4345,
+    "worked_on": "I worked on polynomials and learned how to prove divisibilty of two polynomials",
+    "next_task": "Next task is to study the factor theorem and the remainder theorem",
+    "stop_reason": "I stopped because it was half past 11 and I can think this much was enogh fro today",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-06-29T17:17:27.688Z",
+    "updated_at": "2026-06-29T18:29:52.787Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 4,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-06-30T05:03:40.532Z",
+    "end_time": "2026-06-30T06:17:54.745Z",
+    "duration": 4454,
+    "worked_on": "I completed the chapter about time complexities and learned a new algorithm for finding maximum sub array even though I need practice and I am not clear about this new technique.",
+    "next_task": "Next taks is to attend Talhas Advanced Math class.",
+    "stop_reason": "It was lunch time and I noticed my brain running from hard work of computation for understanding new techniques.",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-06-30T05:03:40.532Z",
+    "updated_at": "2026-06-30T06:17:54.746Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 5,
+  "fields": {
+    "user": 1,
+    "category": 4,
+    "start_time": "2026-06-30T10:25:40.391Z",
+    "end_time": "2026-06-30T10:49:20.042Z",
+    "duration": 1419,
+    "worked_on": "I recorded myself and started to notice my own accent.",
+    "next_task": "The next task is to read two pages of book by using the method vin told.",
+    "stop_reason": "Because now I have to study for math and revise what I studied in todasy paksolve class.",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-06-30T10:25:40.391Z",
+    "updated_at": "2026-06-30T10:49:20.042Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 6,
+  "fields": {
+    "user": 1,
+    "category": 2,
+    "start_time": "2026-06-30T10:49:34.730Z",
+    "end_time": "2026-06-30T11:46:44.147Z",
+    "duration": 3420,
+    "worked_on": "I worked on the proof we discussed in the class in Pak Solve. I got to know how to formally write proof and I understodd the pigeonhole concept better.",
+    "next_task": "The next task is understanding proof by induction and also solve excersizes related.",
+    "stop_reason": "I stopped because i have a Taekwondo class in a bit and I have to get home and kicten in shape before going.",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-06-30T10:49:34.732Z",
+    "updated_at": "2026-06-30T11:47:28.779Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 7,
+  "fields": {
+    "user": 1,
+    "category": null,
+    "start_time": "2026-06-30T15:38:37.274Z",
+    "end_time": null,
+    "duration": 0,
+    "worked_on": "",
+    "next_task": "",
+    "stop_reason": "",
+    "is_deleted": true,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-06-30T15:38:37.275Z",
+    "updated_at": "2026-06-30T15:38:45.368Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 8,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-06-30T15:38:48.772Z",
+    "end_time": "2026-06-30T16:38:54.488Z",
+    "duration": 3605,
+    "worked_on": "I worked on the conteset and was only able to solve one problem in the div 3 contests. It is one of the easiest contest and yet this result, guess I have a long way to go.",
+    "next_task": "The next task is to first study all of the contest problems write solutions play around with it, Write the code again and again.",
+    "stop_reason": "I stopped because I feel like I am wasting my energy if I can't think of a solution and ask AI during the contest that is also really not giving me growth that is why I am thinking of resting and than coming back to it.",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-06-30T15:38:48.772Z",
+    "updated_at": "2026-06-30T16:38:54.488Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 9,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-06-30T17:13:51.259Z",
+    "end_time": "2026-06-30T18:08:09.652Z",
+    "duration": 3258,
+    "worked_on": "I worked on understanding the problems",
+    "next_task": "The next taks is to understand the reaming questions and work on it thorugh the book",
+    "stop_reason": "I stopped because my brain was fried by doing so much computations",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-06-30T17:13:51.261Z",
+    "updated_at": "2026-06-30T18:08:09.652Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 10,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-07-01T05:41:14.183Z",
+    "end_time": "2026-07-01T06:05:33.707Z",
+    "duration": 1459,
+    "worked_on": "adsfa",
+    "next_task": "",
+    "stop_reason": "",
+    "is_deleted": true,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-01T05:41:14.184Z",
+    "updated_at": "2026-07-01T12:31:14.466Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 11,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-07-01T06:06:02.941Z",
+    "end_time": "2026-07-01T07:25:54.397Z",
+    "duration": 4791,
+    "worked_on": "I worked on the palindrome problem from the contest",
+    "next_task": "The nest task is to review it more carefully and try a new problem.",
+    "stop_reason": "I have to do the laundary",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-01T06:06:02.941Z",
+    "updated_at": "2026-07-01T07:25:54.402Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 12,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-07-01T09:02:47.328Z",
+    "end_time": "2026-07-01T12:28:34.245Z",
+    "duration": 9540,
+    "worked_on": "Worked on the binary string problem",
+    "next_task": "To prove that the solution I wrote is correct",
+    "stop_reason": "Because I plan to study physics till 9pm because after that I have a meeting to understand writing a proof",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-01T09:02:47.329Z",
+    "updated_at": "2026-07-01T12:30:34.758Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 13,
+  "fields": {
+    "user": 1,
+    "category": 5,
+    "start_time": "2026-07-01T12:32:04.258Z",
+    "end_time": null,
+    "duration": 0,
+    "worked_on": "",
+    "next_task": "",
+    "stop_reason": "",
+    "is_deleted": true,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-01T12:32:04.259Z",
+    "updated_at": "2026-07-01T15:59:37.608Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 14,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-07-02T17:41:51.342Z",
+    "end_time": "2026-07-02T18:36:50.724Z",
+    "duration": 3299,
+    "worked_on": "I studied the problems after the PIT contest today and I learned about gcd and how to use it benificially for solving a problem.",
+    "next_task": "The next taks is reviewing problem B and H in an hour and than move on to solving the remaining problems from CSES.",
+    "stop_reason": "I stopped because it was half past eleven and I am drained out of energy.",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-02T17:41:51.343Z",
+    "updated_at": "2026-07-02T18:36:50.724Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 15,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-07-03T05:14:10.549Z",
+    "end_time": "2026-07-03T06:57:17.730Z",
+    "duration": 6187,
+    "worked_on": "I worked on problem b and problem h from the elimintion round of PIT",
+    "next_task": "The next task is solving atleast 2 problems from the CSES problem sets",
+    "stop_reason": "I stopped because I wanted to fresh up a little and prepare lunch",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-03T05:14:10.550Z",
+    "updated_at": "2026-07-03T06:57:17.731Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 16,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-07-03T13:43:18.346Z",
+    "end_time": "2026-07-03T16:21:38.390Z",
+    "duration": 4800,
+    "worked_on": "I worked on solving the problem in CSES.",
+    "next_task": "The next taks is to solve the next problems.",
+    "stop_reason": "I stopped because of dinner prep",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-03T13:43:18.346Z",
+    "updated_at": "2026-07-03T16:22:20.504Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 17,
+  "fields": {
+    "user": 1,
+    "category": null,
+    "start_time": "2026-07-03T16:23:43.129Z",
+    "end_time": null,
+    "duration": 0,
+    "worked_on": "",
+    "next_task": "",
+    "stop_reason": "",
+    "is_deleted": true,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-03T16:23:43.129Z",
+    "updated_at": "2026-07-03T16:23:47.719Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 18,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-07-03T16:23:51.236Z",
+    "end_time": "2026-07-03T18:42:19.195Z",
+    "duration": 8307,
+    "worked_on": "I studied the spiral number problems and finally solved it.",
+    "next_task": "The next task is to solve 3 problems from the cses problems in 2 hours",
+    "stop_reason": "Because it was 11:40 currently and I was mentally exhusasted",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-03T16:23:51.236Z",
+    "updated_at": "2026-07-03T18:42:19.197Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 19,
+  "fields": {
+    "user": 1,
+    "category": 5,
+    "start_time": "2026-07-04T16:36:41.696Z",
+    "end_time": "2026-07-04T18:32:18.661Z",
+    "duration": 6936,
+    "worked_on": "I worked on planing for the NSTC which will be held on 11 july and I am just doing my best to be in top 50. I am just trying no pressure to actually be but just that I if I look back I can say I gave my 100%.",
+    "next_task": "The next taks is to complete the task for DAY 1 tomorrow.",
+    "stop_reason": "Because rn I created all of the plan and another module just for physics prep.",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-04T16:36:41.696Z",
+    "updated_at": "2026-07-04T18:32:18.661Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 20,
+  "fields": {
+    "user": 1,
+    "category": 6,
+    "start_time": "2026-07-04T18:32:42.920Z",
+    "end_time": null,
+    "duration": 0,
+    "worked_on": "",
+    "next_task": "",
+    "stop_reason": "",
+    "is_deleted": true,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-04T18:32:42.920Z",
+    "updated_at": "2026-07-04T18:33:04.049Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 21,
+  "fields": {
+    "user": 1,
+    "category": 6,
+    "start_time": "2026-07-05T19:21:00.099Z",
+    "end_time": "2026-07-05T20:30:35.795Z",
+    "duration": 4175,
+    "worked_on": "I worked on the physics mock exam and it gave me a pretty hard time mainly becasue I forgot all of the formulas and remembereing them from core memory was pain.",
+    "next_task": "The next task is to solve actuall problems from Ginacoli and hrk and and the misCancellous Questions becasue they would help a lot.",
+    "stop_reason": "Because it was already 1:30 in the night so I stopped.",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-05T19:21:00.099Z",
+    "updated_at": "2026-07-05T20:30:35.798Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 22,
+  "fields": {
+    "user": 1,
+    "category": null,
+    "start_time": "2026-07-06T14:06:14.006Z",
+    "end_time": null,
+    "duration": 0,
+    "worked_on": "",
+    "next_task": "",
+    "stop_reason": "",
+    "is_deleted": true,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-06T14:06:14.006Z",
+    "updated_at": "2026-07-06T14:06:22.858Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 23,
+  "fields": {
+    "user": 1,
+    "category": 7,
+    "start_time": "2026-07-06T14:06:42.526Z",
+    "end_time": "2026-07-06T17:41:28.316Z",
+    "duration": 12885,
+    "worked_on": "Botany Practical",
+    "next_task": "Stop procrstination and work on physics",
+    "stop_reason": "Because its already night",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-06T14:06:42.526Z",
+    "updated_at": "2026-07-06T17:41:28.316Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 24,
+  "fields": {
+    "user": 1,
+    "category": null,
+    "start_time": "2026-07-07T17:18:05.472Z",
+    "end_time": null,
+    "duration": 0,
+    "worked_on": "",
+    "next_task": "",
+    "stop_reason": "",
+    "is_deleted": true,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-07T17:18:05.472Z",
+    "updated_at": "2026-07-07T17:18:12.222Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 25,
+  "fields": {
+    "user": 1,
+    "category": 6,
+    "start_time": "2026-07-07T17:18:15.894Z",
+    "end_time": "2026-07-07T18:36:17.945Z",
+    "duration": 4682,
+    "worked_on": "I worked on formulas and basics of chapter 2.",
+    "next_task": "The next task is to complete the chapter.",
+    "stop_reason": "I stopped because my mind was exhustasted.",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-07T17:18:15.894Z",
+    "updated_at": "2026-07-07T18:36:17.945Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 26,
+  "fields": {
+    "user": 1,
+    "category": 6,
+    "start_time": "2026-07-08T06:25:28.186Z",
+    "end_time": "2026-07-08T12:32:29.150Z",
+    "duration": 7200,
+    "worked_on": "I worked on the problems of ginacolli and still a lot are left and I have to be fast.",
+    "next_task": "On fast track read rest of the pdf.",
+    "stop_reason": "I stopped becaue I have luch to make",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-08T06:25:28.186Z",
+    "updated_at": "2026-07-08T12:32:53.552Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 27,
+  "fields": {
+    "user": 1,
+    "category": 6,
+    "start_time": "2026-07-08T14:48:31.868Z",
+    "end_time": "2026-07-08T18:40:32.732Z",
+    "duration": 13920,
+    "worked_on": "I worked on the day 5 pdf and studied a lot more.",
+    "next_task": "The next task is to deduce the questions I studied to day from NPTC official question bank",
+    "stop_reason": "I stopped becasue my brain stopped putting in effort so I decided to sleep now.",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-08T14:48:31.871Z",
+    "updated_at": "2026-07-08T18:40:32.732Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 28,
+  "fields": {
+    "user": 1,
+    "category": 6,
+    "start_time": "2026-07-09T15:30:05.060Z",
+    "end_time": "2026-07-09T19:26:47.028Z",
+    "duration": 14201,
+    "worked_on": "I worked on past SHM problems and learned a lot",
+    "next_task": "Now tomorrow is all about mechanics",
+    "stop_reason": "I stopped because my mind cant study anymore",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-09T15:30:05.061Z",
+    "updated_at": "2026-07-09T19:26:47.034Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 29,
+  "fields": {
+    "user": 1,
+    "category": 6,
+    "start_time": "2026-07-10T07:18:38.180Z",
+    "end_time": "2026-07-10T19:42:35.624Z",
+    "duration": 24000,
+    "worked_on": "I worked on All physics I could do",
+    "next_task": "Next task is to make my calendar and schedule properly. This time I want to study consistentlly.",
+    "stop_reason": "I stopped because its alreeay about to be 1 o clock",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-10T07:18:38.180Z",
+    "updated_at": "2026-07-10T19:43:49.187Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 30,
+  "fields": {
+    "user": 1,
+    "category": 8,
+    "start_time": "2026-07-11T16:44:35.396Z",
+    "end_time": "2026-07-11T17:15:13.847Z",
+    "duration": 1838,
+    "worked_on": "I planned the calender for next month",
+    "next_task": "The next task is to solve probles from the ICPC problem sets.",
+    "stop_reason": "I stopped because I did not felt like studiying today",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-11T16:44:35.397Z",
+    "updated_at": "2026-07-11T17:15:13.847Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 31,
+  "fields": {
+    "user": 1,
+    "category": 9,
+    "start_time": "2026-07-12T18:21:39.737Z",
+    "end_time": "2026-07-12T18:42:45.868Z",
+    "duration": 1266,
+    "worked_on": "watched drama",
+    "next_task": "",
+    "stop_reason": "",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-12T18:21:39.737Z",
+    "updated_at": "2026-07-12T18:42:45.868Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 32,
+  "fields": {
+    "user": 1,
+    "category": 10,
+    "start_time": "2026-07-13T07:49:25.081Z",
+    "end_time": "2026-07-13T09:51:58.082Z",
+    "duration": 7353,
+    "worked_on": "I worked on installing skills and realized that it costs a lot of tokesn and quota therfore now I have to find other skills  so that the quoat does not ends this fast",
+    "next_task": "The next task is to solve AoPs",
+    "stop_reason": "I stopped because I wanted to take a  nap and my shoulders hurt rn. its 2:51pm rn.",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": null,
+    "created_at": "2026-07-13T07:49:25.082Z",
+    "updated_at": "2026-07-13T09:51:58.086Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 33,
+  "fields": {
+    "user": 1,
+    "category": null,
+    "start_time": "2026-07-15T05:21:16.901Z",
+    "end_time": "2026-07-15T05:21:33.133Z",
+    "duration": 16,
+    "worked_on": "test",
+    "next_task": "test",
+    "stop_reason": "test",
+    "is_deleted": true,
+    "is_paused": false,
+    "last_start_time": "2026-07-15T05:21:16.901Z",
+    "created_at": "2026-07-15T05:21:16.902Z",
+    "updated_at": "2026-07-15T06:06:11.367Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 34,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-07-14T15:55:00Z",
+    "end_time": "2026-07-14T17:55:00Z",
+    "duration": 7200,
+    "worked_on": "I solved Div 3 problems from Codeforces.",
+    "next_task": "Make a proper timetable for managing different things. Also work on and learn string manipulation in C++.",
+    "stop_reason": "Participating in a CF contest or solving CF problems using only brain makes me exhausted.",
+    "is_deleted": true,
+    "is_paused": false,
+    "last_start_time": "2026-07-14T15:55:00Z",
+    "created_at": "2026-07-15T05:54:37.160Z",
+    "updated_at": "2026-07-15T06:06:18.143Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 35,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-07-14T15:55:00Z",
+    "end_time": "2026-07-14T17:55:00Z",
+    "duration": 7200,
+    "worked_on": "I solved Div 3 problems from Codeforces.",
+    "next_task": "Make a proper timetable for managing different things. Also work on and learn string manipulation in C++.",
+    "stop_reason": "Participating in a CF contest or solving CF problems using only brain makes me exhausted.",
+    "is_deleted": true,
+    "is_paused": false,
+    "last_start_time": "2026-07-14T15:55:00Z",
+    "created_at": "2026-07-15T06:00:08.547Z",
+    "updated_at": "2026-07-15T06:06:22.188Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 36,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-07-14T15:55:00Z",
+    "end_time": "2026-07-14T17:55:00Z",
+    "duration": 7200,
+    "worked_on": "I solved Div 3 problems from Codeforces.",
+    "next_task": "Make a proper timetable for managing different things. Also work on and learn string manipulation in C++.",
+    "stop_reason": "Participating in a CF contest or solving CF problems using only brain makes me exhausted.",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": "2026-07-14T15:55:00Z",
+    "created_at": "2026-07-15T06:02:26.137Z",
+    "updated_at": "2026-07-15T06:02:26.138Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 37,
+  "fields": {
+    "user": 1,
+    "category": 3,
+    "start_time": "2026-07-15T06:07:07.642Z",
+    "end_time": "2026-07-15T09:41:54.632Z",
+    "duration": 12886,
+    "worked_on": "I worked on solving the cp ratings problem and I also took the physics intermediete class in paksolve",
+    "next_task": "Next task is to study the remaining cp problems",
+    "stop_reason": "I stopped because i felt like taking a nap",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": "2026-07-15T06:07:07.642Z",
+    "created_at": "2026-07-15T06:07:07.643Z",
+    "updated_at": "2026-07-15T09:41:54.633Z"
+  }
+},
+{
+  "model": "tracker.studysession",
+  "pk": 38,
+  "fields": {
+    "user": 1,
+    "category": null,
+    "start_time": "2026-07-15T18:28:26.202Z",
+    "end_time": "2026-07-15T18:30:23.435Z",
+    "duration": 20,
+    "worked_on": "test",
+    "next_task": "",
+    "stop_reason": "",
+    "is_deleted": false,
+    "is_paused": false,
+    "last_start_time": "2026-07-15T18:30:09.815Z",
+    "created_at": "2026-07-15T18:28:26.202Z",
+    "updated_at": "2026-07-15T18:30:23.435Z"
+  }
+},
+{
+  "model": "tracker.sessionedithistory",
+  "pk": 1,
+  "fields": {
+    "session": 6,
+    "edited_by": 1,
+    "previous_category": "None",
+    "new_category": "Mathematics",
+    "previous_duration": 3429,
+    "new_duration": 3420,
+    "previous_notes": "I worked on the proof we discussed in the class in Pak Solve. I got to know how to formally write proof and I understodd the pigeonhole concept better.",
+    "new_notes": "I worked on the proof we discussed in the class in Pak Solve. I got to know how to formally write proof and I understodd the pigeonhole concept better.",
+    "reason": "Because it showed no category and I studied mathematics",
+    "edited_at": "2026-06-30T11:47:28.783Z"
+  }
+},
+{
+  "model": "tracker.sessionedithistory",
+  "pk": 2,
+  "fields": {
+    "session": 12,
+    "edited_by": 1,
+    "previous_category": "CP handbook study",
+    "new_category": "CP handbook study",
+    "previous_duration": 12346,
+    "new_duration": 9540,
+    "previous_notes": "Worked on the binary string problem",
+    "new_notes": "Worked on the binary string problem",
+    "reason": "Because I dont know why this session continued even though I clearly stopped it before it was still running. SO that is why I removed the duration I did not studied in",
+    "edited_at": "2026-07-01T12:30:34.772Z"
+  }
+},
+{
+  "model": "tracker.sessionedithistory",
+  "pk": 3,
+  "fields": {
+    "session": 16,
+    "edited_by": 1,
+    "previous_category": "CP handbook study",
+    "new_category": "CP handbook study",
+    "previous_duration": 9500,
+    "new_duration": 4800,
+    "previous_notes": "I worked on solving the problem in CSES.",
+    "new_notes": "I worked on solving the problem in CSES.",
+    "reason": "I editied becaue I forgot to stop the session",
+    "edited_at": "2026-07-03T16:22:20.517Z"
+  }
+},
+{
+  "model": "tracker.sessionedithistory",
+  "pk": 4,
+  "fields": {
+    "session": 26,
+    "edited_by": 1,
+    "previous_category": "Physics Prep",
+    "new_category": "Physics Prep",
+    "previous_duration": 22020,
+    "new_duration": 7200,
+    "previous_notes": "I worked on the problems of ginacolli and still a lot are left and I have to be fast.",
+    "new_notes": "I worked on the problems of ginacolli and still a lot are left and I have to be fast.",
+    "reason": "Because I forgot to close the session",
+    "edited_at": "2026-07-08T12:32:53.557Z"
+  }
+},
+{
+  "model": "tracker.sessionedithistory",
+  "pk": 5,
+  "fields": {
+    "session": 29,
+    "edited_by": 1,
+    "previous_category": "Physics Prep",
+    "new_category": "Physics Prep",
+    "previous_duration": 44637,
+    "new_duration": 24000,
+    "previous_notes": "I worked on All physics I could do",
+    "new_notes": "I worked on All physics I could do",
+    "reason": "I edited it because in the middle time I have also eated luch and dinner and procrastinated on my mobile phone sometimes so I remove that time from the toal time",
+    "edited_at": "2026-07-10T19:43:49.193Z"
+  }
+},
+{
+  "model": "tracker.videoentry",
+  "pk": 1,
+  "fields": {
+    "session": 3,
+    "file": "session_videos/WhatsApp_Video_2026-06-29_at_23.28.44.mp4",
+    "duration": 4345,
+    "uploaded_at": "2026-06-29T18:29:53.043Z"
+  }
+},
+{
+  "model": "tracker.videoentry",
+  "pk": 2,
+  "fields": {
+    "session": 14,
+    "file": "session_videos/WhatsApp_Video_2026-07-02_at_23.35.02.mp4",
+    "duration": 3299,
+    "uploaded_at": "2026-07-02T18:36:50.930Z"
+  }
+},
+{
+  "model": "tracker.videoentry",
+  "pk": 3,
+  "fields": {
+    "session": 35,
+    "file": "session_videos/WhatsApp_Video_2026-07-14_at_22.54.32.mp4",
+    "duration": 7200,
+    "uploaded_at": "2026-07-15T06:00:08.808Z"
+  }
+},
+{
+  "model": "tracker.videoentry",
+  "pk": 4,
+  "fields": {
+    "session": 36,
+    "file": "session_videos/WhatsApp_Video_2026-07-14_at_22.54.32.mp4",
+    "duration": 7200,
+    "uploaded_at": "2026-07-15T06:02:26.478Z"
+  }
+}
+]
