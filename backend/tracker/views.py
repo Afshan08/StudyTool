@@ -432,3 +432,287 @@ class ResumeActiveSessionView(APIView):
         
         serializer = StudySessionSerializer(active_session, context={'request': request})
         return Response(serializer.data)
+
+
+# -------------------------------------------------------------------
+# Project Tracking & AI Optimization Module Views
+# -------------------------------------------------------------------
+
+import threading
+from .models import Project, TextDetail, ProjectFile, ProjectSummary
+from .serializers import (
+    ProjectSerializer, TextDetailSerializer,
+    ProjectFileSerializer, ProjectSummarySerializer
+)
+from .ai_agent import run_project_ai_audit
+from .voice_pipeline import process_voice_audio_placeholder
+
+
+def _run_audit_in_background(project_id: str):
+    """
+    Background thread: runs Ollama AI audit and saves the result.
+    Sets audit_pending=True before starting and False when done.
+    """
+    try:
+        project = Project.objects.get(pk=project_id)
+        logs = TextDetail.objects.filter(project=project)
+        audit_result = run_project_ai_audit(project, logs)
+        current_week = project.summaries.count() + 1
+        ProjectSummary.objects.create(
+            project=project,
+            week_number=current_week,
+            summary_text=audit_result['summary_text'],
+            blindspots_detected=audit_result['blindspots_detected'],
+            goal_completion_progress=audit_result['goal_completion_progress'],
+            actionable_tips=audit_result['actionable_tips']
+        )
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Background audit failed for project {project_id}: {e}")
+    finally:
+        # Always clear the pending flag so the frontend knows it's done
+        try:
+            Project.objects.filter(pk=project_id).update(audit_pending=False)
+        except Exception:
+            pass
+
+
+def _transcribe_and_update_log(log_id: str, audio_bytes: bytes, filename: str):
+    """
+    Background thread: transcribes audio using faster-whisper and updates an
+    already-saved TextDetail log entry with the result.
+    """
+    import tempfile, os
+    tmp_path = None
+    try:
+        ext = os.path.splitext(filename)[1] or '.wav'
+        with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as tmp:
+            tmp.write(audio_bytes)
+            tmp_path = tmp.name
+
+        # Use a file-like adapter so process_voice_audio_placeholder can call .chunks()
+        class FileLike:
+            def __init__(self, path, name):
+                self.path = path
+                self.name = name
+            def chunks(self):
+                with open(self.path, 'rb') as f:
+                    yield f.read()
+
+        result = process_voice_audio_placeholder(FileLike(tmp_path, filename))
+        transcription = result.get('transcription', '')
+
+        if transcription:
+            log = TextDetail.objects.get(pk=log_id)
+            log.log_text = transcription
+            if result.get('detected_achievement'):
+                log.achievement = result['detected_achievement']
+            log.save(update_fields=['log_text', 'achievement'])
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Background transcription failed for log {log_id}: {e}")
+    finally:
+        if tmp_path and os.path.exists(tmp_path):
+            try:
+                os.remove(tmp_path)
+            except Exception:
+                pass
+
+
+class ProjectListCreateView(APIView):
+    def get(self, request):
+        status_filter = request.query_params.get('status')
+        projects = Project.objects.filter(user=request.user)
+        if status_filter:
+            projects = projects.filter(status=status_filter)
+        serializer = ProjectSerializer(projects, many=True)
+
+        active_count = Project.objects.filter(user=request.user, status='Active').count()
+        return Response({
+            'projects': serializer.data,
+            'active_count': active_count,
+            'max_active_limit': 3
+        })
+
+    def post(self, request):
+        active_count = Project.objects.filter(user=request.user, status='Active').count()
+        desired_status = request.data.get('status', 'Active')
+
+        if desired_status == 'Active' and active_count >= 3:
+            return Response({
+                'error': 'Max Active Limit Reached: Maximum of 3 active projects allowed simultaneously. Please Complete or Handoff an active project to free up a slot.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = ProjectSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        project = serializer.save(user=request.user)
+        return Response(ProjectSerializer(project).data, status=status.HTTP_201_CREATED)
+
+
+class ProjectDetailView(APIView):
+    def get(self, request, pk):
+        project = get_object_or_404(Project, pk=pk, user=request.user)
+        return Response(ProjectSerializer(project).data)
+
+    def patch(self, request, pk):
+        project = get_object_or_404(Project, pk=pk, user=request.user)
+        new_status = request.data.get('status')
+
+        if new_status == 'Active' and project.status != 'Active':
+            active_count = Project.objects.filter(user=request.user, status='Active').count()
+            if active_count >= 3:
+                return Response({
+                    'error': 'Max Active Limit Reached: Maximum of 3 active projects allowed simultaneously. Please Complete or Handoff an active project first.'
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = ProjectSerializer(project, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        updated_project = serializer.save()
+        return Response(ProjectSerializer(updated_project).data)
+
+    def delete(self, request, pk):
+        project = get_object_or_404(Project, pk=pk, user=request.user)
+        project.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ProjectLogListCreateView(APIView):
+    def get(self, request, project_id):
+        project = get_object_or_404(Project, pk=project_id, user=request.user)
+        logs = TextDetail.objects.filter(project=project)
+        serializer = TextDetailSerializer(logs, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, project_id):
+        project = get_object_or_404(Project, pk=project_id, user=request.user)
+        log_text = request.data.get('log_text', '').strip()
+        hours_worked = request.data.get('hours_worked', 0.0)
+        achievement = request.data.get('achievement', '')
+
+        if not log_text:
+            return Response({'error': 'log_text is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            hours_worked = float(hours_worked)
+        except (TypeError, ValueError):
+            hours_worked = 0.0
+
+        log = TextDetail.objects.create(
+            project=project,
+            log_text=log_text,
+            hours_worked=hours_worked,
+            achievement=achievement
+        )
+        return Response(TextDetailSerializer(log).data, status=status.HTTP_201_CREATED)
+
+
+class ProjectFileListCreateView(APIView):
+    def get(self, request, project_id):
+        project = get_object_or_404(Project, pk=project_id, user=request.user)
+        files = ProjectFile.objects.filter(project=project)
+        serializer = ProjectFileSerializer(files, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, project_id):
+        project = get_object_or_404(Project, pk=project_id, user=request.user)
+        file_obj = request.FILES.get('file')
+        if not file_obj:
+            return Response({'error': 'No file uploaded.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        file_format = request.data.get('file_format', '') or file_obj.name.split('.')[-1]
+        project_file = ProjectFile.objects.create(
+            project=project,
+            file=file_obj,
+            file_format=file_format
+        )
+        return Response(ProjectFileSerializer(project_file).data, status=status.HTTP_201_CREATED)
+
+
+class ProjectAIAuditView(APIView):
+    """
+    Starts an async Ollama AI audit in a background thread.
+    Returns immediately with audit_pending=True so the frontend can poll.
+    """
+    def post(self, request, project_id):
+        project = get_object_or_404(Project, pk=project_id, user=request.user)
+
+        if project.audit_pending:
+            return Response(
+                {'message': 'An audit is already running for this project. Please wait.'},
+                status=status.HTTP_202_ACCEPTED
+            )
+
+        # Mark as pending immediately
+        project.audit_pending = True
+        project.save(update_fields=['audit_pending'])
+
+        # Fire background thread
+        t = threading.Thread(
+            target=_run_audit_in_background,
+            args=(str(project.id),),
+            daemon=True
+        )
+        t.start()
+
+        return Response(
+            {
+                'message': 'AI audit started in the background using Ollama. Check the Audit Results tab in a few moments.',
+                'audit_pending': True,
+                'project_id': str(project.id)
+            },
+            status=status.HTTP_202_ACCEPTED
+        )
+
+
+class VoiceTranscribeView(APIView):
+    """
+    Immediately saves a placeholder log entry and kicks off faster-whisper
+    transcription in the background. Returns the saved log instantly.
+    """
+    def post(self, request):
+        audio_file = request.FILES.get('audio')
+        project_id = request.data.get('project_id')
+        hours_worked = request.data.get('hours_worked', 1.0)
+        achievement = request.data.get('achievement', '')
+
+        if not audio_file:
+            return Response({'error': 'No audio file provided.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # If a project_id is provided, save a placeholder log immediately
+        # so the user sees instant confirmation, then transcribe in background
+        log_id = None
+        if project_id:
+            try:
+                project = Project.objects.get(pk=project_id, user=request.user)
+                log = TextDetail.objects.create(
+                    project=project,
+                    log_text='[Transcribing voice note... This will update automatically in a few seconds]',
+                    hours_worked=float(hours_worked) if hours_worked else 1.0,
+                    achievement=achievement or 'Voice note recorded — transcription in progress'
+                )
+                log_id = str(log.id)
+
+                # Read audio bytes now (file stream will close after request)
+                audio_bytes = audio_file.read()
+                filename = audio_file.name or 'voice_recording.wav'
+
+                t = threading.Thread(
+                    target=_transcribe_and_update_log,
+                    args=(log_id, audio_bytes, filename),
+                    daemon=True
+                )
+                t.start()
+
+                return Response({
+                    'message': 'Voice note saved! Transcription is running in the background — refresh logs in a moment.',
+                    'log_id': log_id,
+                    'transcription_pending': True,
+                    'status': 'accepted'
+                }, status=status.HTTP_202_ACCEPTED)
+
+            except Project.DoesNotExist:
+                pass
+
+        # Fallback: synchronous transcription (no project_id given)
+        result = process_voice_audio_placeholder(audio_file)
+        return Response(result, status=status.HTTP_200_OK)

@@ -78,3 +78,63 @@ export interface Stats {
     monthly: ChartItem[];
   };
 }
+
+export type ProjectStatus = 'Active' | 'Completed' | 'Handed_Off';
+
+export interface TextDetail {
+  id: string;
+  project: string;
+  created_at: string;
+  log_text: string;
+  hours_worked: number;
+  achievement: string;
+}
+
+export interface ProjectFile {
+  id: string;
+  project: string;
+  file_format: string;
+  file: string;
+  uploaded_at: string;
+}
+
+export interface ProjectSummary {
+  id: string;
+  project: string;
+  week_number: number;
+  summary_text: string;
+  blindspots_detected: string;
+  goal_completion_progress: number;
+  actionable_tips: string;
+  created_at: string;
+}
+
+export interface Project {
+  id: string;
+  name: string;
+  smart_goal: string;
+  status: ProjectStatus;
+  audit_pending: boolean;
+  created_at: string;
+  updated_at: string;
+  logs: TextDetail[];
+  files: ProjectFile[];
+  summaries: ProjectSummary[];
+  total_hours_worked: number;
+  latest_progress: number;
+}
+
+export interface ProjectsResponse {
+  projects: Project[];
+  active_count: number;
+  max_active_limit: number;
+}
+
+export interface VoiceTranscribeResult {
+  transcription: string;
+  detected_hours: number;
+  detected_achievement: string;
+  is_placeholder: boolean;
+  status: string;
+}
+

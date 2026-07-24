@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useTimer } from '../context/TimerContext';
 import { api } from '../services/api';
-import { LayoutDashboard, History, Calendar, LogOut, Flame, X } from 'lucide-react';
+import { LayoutDashboard, History, Calendar, LogOut, Flame, X, FolderKanban } from 'lucide-react';
 
 interface SidebarProps {
   onClose?: () => void;
@@ -86,6 +86,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
           </NavLink>
 
           <NavLink
+            to="/documentation"
+            onClick={handleNavClick}
+            className={({ isActive }) =>
+              `flex items-center px-4 py-3 rounded-lg text-sm font-medium sidebar-link border active-press ${
+                isActive
+                  ? 'bg-indigo-600/10 text-indigo-400 border-indigo-500/20'
+                  : 'text-slate-400 hover:bg-slate-900/40 hover:text-slate-200 border-transparent'
+              }`
+            }
+          >
+            <FolderKanban className="w-5 h-5 mr-3 text-indigo-400" />
+            Documentation
+          </NavLink>
+
+          <NavLink
             to="/history"
             onClick={handleNavClick}
             className={({ isActive }) =>
@@ -131,6 +146,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
           </NavLink>
         </nav>
       </div>
+
 
       {/* Footer Timer Status & Logout */}
       <div className="p-4 border-t border-darkBorder">

@@ -243,5 +243,108 @@ export const api = {
     });
     if (!res.ok) throw new Error('Failed to load statistics');
     return res.json();
+  },
+
+  // Projects & Documentation Module
+  async getProjects(statusFilter?: string) {
+    const params = new URLSearchParams();
+    if (statusFilter) params.append('status', statusFilter);
+    const res = await fetch(`${BASE_URL}/projects/?${params.toString()}`, {
+      headers: getHeaders()
+    });
+    if (!res.ok) throw new Error('Failed to load projects');
+    return res.json();
+  },
+
+  async createProject(name: string, smart_goal: string) {
+    const res = await fetch(`${BASE_URL}/projects/`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({ name, smart_goal })
+    });
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || data.smart_goal?.[0] || 'Failed to create project');
+    }
+    return res.json();
+  },
+
+  async updateProject(id: string, updates: { name?: string; smart_goal?: string; status?: 'Active' | 'Completed' | 'Handed_Off' }) {
+    const res = await fetch(`${BASE_URL}/projects/${id}/`, {
+      method: 'PATCH',
+      headers: getHeaders(),
+      body: JSON.stringify(updates)
+    });
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || 'Failed to update project');
+    }
+    return res.json();
+  },
+
+  async deleteProject(id: string) {
+    const res = await fetch(`${BASE_URL}/projects/${id}/`, {
+      method: 'DELETE',
+      headers: getHeaders()
+    });
+    if (!res.ok) throw new Error('Failed to delete project');
+  },
+
+  async addProjectLog(projectId: string, log_text: string, hours_worked: number, achievement: string) {
+    const res = await fetch(`${BASE_URL}/projects/${projectId}/logs/`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify({ log_text, hours_worked, achievement })
+    });
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || 'Failed to add project log');
+    }
+    return res.json();
+  },
+
+  async uploadProjectFile(projectId: string, file: File, file_format?: string) {
+    const formData = new FormData();
+    formData.append('file', file);
+    if (file_format) formData.append('file_format', file_format);
+    const res = await fetch(`${BASE_URL}/projects/${projectId}/files/`, {
+      method: 'POST',
+      headers: getHeaders(true),
+      body: formData
+    });
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || 'Failed to upload project file');
+    }
+    return res.json();
+  },
+
+  async runProjectAIAudit(projectId: string) {
+    const res = await fetch(`${BASE_URL}/projects/${projectId}/ai-audit/`, {
+      method: 'POST',
+      headers: getHeaders()
+    });
+    // 200 (sync result) or 202 (async accepted) are both success
+    if (res.status !== 200 && res.status !== 201 && res.status !== 202) {
+      const data = await res.json();
+      throw new Error(data.error || 'Failed to execute AI project audit');
+    }
+    return res.json();
+  },
+
+  async transcribeVoiceAudio(audioBlob: Blob, filename = 'voice_recording.wav') {
+    const formData = new FormData();
+    formData.append('audio', audioBlob, filename);
+    const res = await fetch(`${BASE_URL}/projects/transcribe-voice/`, {
+      method: 'POST',
+      headers: getHeaders(true),
+      body: formData
+    });
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || 'Failed to transcribe audio via voice pipeline placeholder');
+    }
+    return res.json();
   }
 };
+

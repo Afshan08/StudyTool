@@ -14,3 +14,8 @@ psycopg2-binary>=2.9.9
 
 # Environment variable management
 python-decouple>=3.8
+
+# AI & Speech-to-Text Pipeline
+openai>=1.0.0
+faster-whisper>=1.0.0
+

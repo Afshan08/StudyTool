@@ -10,6 +10,7 @@ import { Dashboard } from './pages/Dashboard';
 import { History } from './pages/History';
 import { CalendarView } from './pages/CalendarView';
 import { PhysicsPrep } from './pages/PhysicsPrep';
+import { Documentation } from './pages/Documentation';
 import { Menu, X } from 'lucide-react';
 
 const Layout: React.FC = () => {
@@ -77,6 +78,7 @@ export const App: React.FC = () => {
           {/* Protected Application Routes under Shared Sidebar Layout */}
           <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/documentation" element={<Documentation />} />
             <Route path="/history" element={<History />} />
             <Route path="/calendar" element={<CalendarView />} />
             <Route path="/physics-prep" element={<PhysicsPrep />} />
@@ -88,3 +90,4 @@ export const App: React.FC = () => {
 };
 
 export default App;
+

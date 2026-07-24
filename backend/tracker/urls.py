@@ -4,7 +4,10 @@ from .views import (
     ActiveSessionView, StopActiveSessionView,
     SessionListView, SessionDetailView, SessionRestoreView,
     UploadSessionVideoView, StatisticsView,
-    PauseActiveSessionView, ResumeActiveSessionView
+    PauseActiveSessionView, ResumeActiveSessionView,
+    ProjectListCreateView, ProjectDetailView,
+    ProjectLogListCreateView, ProjectFileListCreateView,
+    ProjectAIAuditView, VoiceTranscribeView
 )
 
 urlpatterns = [
@@ -22,4 +25,13 @@ urlpatterns = [
     path('sessions/<int:pk>/', SessionDetailView.as_view(), name='session-detail'),
 
     path('statistics/', StatisticsView.as_view(), name='statistics'),
+
+    # Project Tracking & AI Optimization Endpoints
+    path('projects/', ProjectListCreateView.as_view(), name='project-list-create'),
+    path('projects/transcribe-voice/', VoiceTranscribeView.as_view(), name='voice-transcribe'),
+    path('projects/<uuid:pk>/', ProjectDetailView.as_view(), name='project-detail'),
+    path('projects/<uuid:project_id>/logs/', ProjectLogListCreateView.as_view(), name='project-log-list-create'),
+    path('projects/<uuid:project_id>/files/', ProjectFileListCreateView.as_view(), name='project-file-list-create'),
+    path('projects/<uuid:project_id>/ai-audit/', ProjectAIAuditView.as_view(), name='project-ai-audit'),
 ]
+
